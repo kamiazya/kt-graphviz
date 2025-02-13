@@ -7,5 +7,5 @@
  * in the user manual at https://docs.gradle.org/7.2/userguide/multi_project_builds.html
  */
 
-rootProject.name = "kt-graphviz"
+rootProject.name = "kt-graphviz-root"
 include("lib")
