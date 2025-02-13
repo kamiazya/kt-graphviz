@@ -4,7 +4,5 @@
 package com.github.kamiazya.graphviz
 
 class Library {
-    fun someLibraryMethod(): Boolean {
-        return true
-    }
+    fun someLibraryMethod(): Boolean = true
 }
