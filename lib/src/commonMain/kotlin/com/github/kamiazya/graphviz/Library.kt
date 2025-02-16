@@ -3,6 +3,8 @@
  */
 package com.github.kamiazya.graphviz
 
-class Library {
-    fun someLibraryMethod(): Boolean = true
+import kotlin.random.Random
+
+open class Library {
+    open fun someLibraryMethod(): Boolean = Random.nextBoolean()
 }
