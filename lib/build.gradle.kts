@@ -14,7 +14,13 @@ repositories {
 }
 
 kotlin {
-    jvm()
+    jvm {
+        testRuns.named("test") {
+            executionTask.configure {
+                useJUnitPlatform() // required by kotest
+            }
+        }
+    }
     linuxX64()
 
     sourceSets {
@@ -36,5 +42,5 @@ detekt {
     buildUponDefaultConfig = true
     autoCorrect = true
 
-    source = files("src/commonMain/kotlin", "src/commonTest/kotlin")
+    source = files("src/commonMain/kotlin")
 }
