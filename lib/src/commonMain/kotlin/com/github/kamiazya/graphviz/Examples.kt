@@ -21,71 +21,79 @@ val a: List<DotModel> = listOf(
 
             var c = ref("c")
 
-            edge(a, b.port("port_of_a", Compass.N), c) {
+            edge(a, b.ref("port_of_a", Compass.N), ref("C:s")) {
                 color = "red"
             }
 
-            a - b - c
+            (a - b - c) {
+                color = "red"
+            }
 
-            // var e2 = ("a" - refs(a, c)) {
-            //     color = "red"
-            // }
+            ("a" - (a and c)) {
+                color = "red"
+            }
 
-            // var x = (a - b - c - "x") {
-            //     color = "red"
-            // }
-            // println(e1)
-            // println(e2)
+            ("a" - b - "c") {
+                color = "red"
+            }
 
-            // ("a" - b - "c") {
-            //     color = "red"
-            // }
+            ("a" - b.ref("port_of_a", Compass.N) - "c") {
+                color = "red"
+            }
 
-            // ("a" - b.port("port_of_a", Compass.N) - "c") {
-            //     color = "red"
-            // }
-
-            // ("a" - b.port("port_of_a", Compass.N) - c) {
-            //     color = "red"
-            // }
-
-            // ("a" - b - c.port("port_of_c", Compass.N)) {
-            //     color = "red"
-            // }
+            ("a" - b.ref("port_of_a", Compass.N) - c) {
+                color = "red"
+            }
         }
     },
     dot {
         comment = "This is a sample graph."
-
-        digraph {
-            // val a = node("a")
-            // val b = node("b")
-            // val c = node("c")
-
-            // a to b to c {
-            //     color = "red"
-            // }
-
-            // var e = edge(a, b, c) {
-            //     color = "red"
-            // }
+        strict digraph {
+            node {
+                color = "blue"
+            }
         }
     },
     dot {
         comment = "This is a sample graph."
-        // strict digraph {
+        strict.digraph("graphID") {
+            node {
+                color = "red"
+            }
 
-        //     node("a") {
-        //         //
-        //     }
-        // }
+            edge {
+                color = "red"
+            }
+
+            node("a") {
+                comment = "This is a sample node a."
+                color = "blue"
+            }
+        }
     },
     dot {
         comment = "This is a sample graph."
-        // strict digraph("graphID") {
-        //     node {
-        //         id = "a"
-        //     }
-        // }
+        strict graph {
+            node {
+                color = "blue"
+            }
+        }
+    },
+    dot {
+        comment = "This is a sample graph."
+        strict.graph("graphID") {
+            node {
+                color = "red"
+            }
+
+            edge {
+                color = "red"
+            }
+
+            node("a") {
+                comment = "This is a sample node a."
+                color = "blue"
+            }
+        }
     }
 )

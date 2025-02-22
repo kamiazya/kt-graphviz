@@ -3,25 +3,7 @@ package com.github.kamiazya.graphviz
 /**
  * AttributeValue is a value of an attribute.
  */
-// public sealed interface AttributeValue {
-//     // companion object {
-//     //     fun of(value: Any): AttributeValue = when (value) {
-//     //         is String -> StringAttributeValue(value)
-//     //         is Int -> IntAttributeValue(value)
-//     //         is Float -> FloatAttributeValue(value)
-//     //         is Boolean -> BoolAttributeValue(value)
-//     //         else -> throw IllegalArgumentException("Unsupported type: ${value::class.simpleName}")
-//     //     }
-
-//     //     public class StringAttributeValue(val value: String) : AttributeValue
-
-//     //     public class IntAttributeValue(val value: Int) : AttributeValue
-
-//     //     public class FloatAttributeValue(val value: Float) : AttributeValue
-
-//     //     public class BoolAttributeValue(val value: Boolean) : AttributeValue
-//     // }
-// }
+public typealias AttributeValue = Any
 
 /**
  * Compass is a direction of a node.
