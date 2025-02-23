@@ -21,7 +21,7 @@ val a: List<DotModel> = listOf(
 
             var c = ref("c")
 
-            edge(a, b.ref("port_of_a", Compass.N), ref("C:s")) {
+            edge(a, b.toRef("port_of_a", Compass.N), ref("C:s")) {
                 color = "red"
             }
 
@@ -37,11 +37,11 @@ val a: List<DotModel> = listOf(
                 color = "red"
             }
 
-            ("a" - b.ref("port_of_a", Compass.N) - "c") {
+            ("a" - b.toRef("port_of_a", Compass.N) - "c") {
                 color = "red"
             }
 
-            ("a" - b.ref("port_of_a", Compass.N) - c) {
+            ("a" - b.toRef("port_of_a", Compass.N) - c) {
                 color = "red"
             }
         }

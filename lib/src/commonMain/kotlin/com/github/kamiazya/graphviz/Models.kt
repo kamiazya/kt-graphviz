@@ -438,21 +438,29 @@ public interface HasRootGraph {
     /**
      * A root graph.
      */
-    var graph: RootGraphModel?
+    var root: RootGraphModel?
 
     /**
      * Get the root graph.
      * @return A root graph.
      */
-    fun getRootGraph(): RootGraphModel? = graph
+    fun getRootGraph(): RootGraphModel = root ?: error("Root graph is not set.")
+
+    /**
+     * Get the root graph or null.
+     * 
+     * @return A root graph if exists.
+     *        null if not exists.
+     */
+    fun getRootGraphOrNull(): RootGraphModel? = root
 
     /**
      * Set the root graph.
-     * @param root A root graph to set.
+     * @param graph A root graph to set.
      */
-    fun setRootGraph(root: RootGraphModel) {
-        check(graph == null) { "Root graph is already set." }
-        graph = root
+    fun setRootGraph(graph: RootGraphModel) {
+        check(root == null) { "Root graph is already set." }
+        root = graph
     }
 }
 
@@ -461,12 +469,13 @@ public interface HasRootGraph {
  */
 public interface NodeModel : HasID, HasComment, HasAttributes, NodeAttributeGroupModel, NodeRef {
     /**
-     * Represent the port of the node.
+     * Convert to a forward reference of node.
+     *
      * @param port A port of the node.
      * @param compass A compass of the node.
      * @return A ForwardRefNode.
      */
-    public fun ref(port: String? = null, compass: Compass? = null): ForwardRefNode = ForwardRefNode(id, port, compass)
+    public fun toRef(port: String? = null, compass: Compass? = null): ForwardRefNode = ForwardRefNode(id, port, compass)
 }
 
 public interface HasEdgeDistributions {
@@ -583,8 +592,21 @@ public interface HasNodes {
 
     /**
      * Get a node by ID.
+     *
+     * @param id An ID of the node.
+     * @return A node if found.
+     * @throws IllegalArgumentException if not found.
      */
-    fun getNode(id: String): NodeModel? = nodes.find { it.id == id }
+    fun getNode(id: String): NodeModel = getNodeOrNull(id) ?: error("Node not found: $id")
+
+    /**
+     * Get a node by ID or null.
+     *
+     * @param id An ID of the node.
+     * @return A node if found.
+     *       null if not found.
+     */
+    fun getNodeOrNull(id: String): NodeModel? = nodes.find { it.id == id }
 
     /**
      * Add a node.
@@ -667,12 +689,23 @@ public interface HasSubgraphs {
     }
 
     /**
-     * Find a subgraph by ID.
+     * Get a subgraph by ID.
+     *
      * @param id An ID of the subgraph.
      * @return A subgraph if found.
      *        null if not found.
+     * @throws IllegalArgumentException if not found.
      */
-    fun findSubgraph(id: String): SubgraphModel? = subgraphs.find { it.id == id }
+    fun getSubgraph(id: String): SubgraphModel = getSubgraphOrNull(id) ?: error("Subgraph not found: $id")
+
+    /**
+     * Get a subgraph by ID or null.
+     * 
+     * @param id An ID of the subgraph.
+     * @return A subgraph if found.
+     *       null if not found.
+     */
+    fun getSubgraphOrNull(id: String): SubgraphModel? = subgraphs.find { it.id == id }
 
     /**
      * Clear all subgraphs.

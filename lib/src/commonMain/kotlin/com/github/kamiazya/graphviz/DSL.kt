@@ -849,25 +849,25 @@ public class SubgraphScope(
 public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromContextDsl {
     /**
      * Create a graph and set it as a root graph.
-     * 
+     *
      * @param id An ID of the graph.
      * @param comment A comment of the graph.
      * @param block A block to create a graph.
      * @return A graph.
      *
      * ## Example
-     * 
+     *
      * If you want to create a graph with an ID "a" and set a color of the graph to "red",
      * you can use the following code.
-     * 
+     *
      * ```kotlin
      * graph("a") {
      *   color = "red"
      * }
      * ```
-     * 
+     *
      * This above code is equivalent to the following DOT code.
-     * 
+     *
      * ```dot
      * graph a {
      *  color="red";
@@ -883,25 +883,25 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
 
     /**
      * Create a digraph and set it as a root graph.
-     * 
+     *
      * @param id An ID of the digraph.
      * @param comment A comment of the digraph.
      * @param block A block to create a digraph.
      * @return A digraph.
-     * 
+     *
      * ## Example
-     * 
+     *
      * If you want to create a digraph with an ID "a" and set a color of the digraph to "red",
      * you can use the following code.
-     * 
+     *
      * ```kotlin
      * digraph("a") {
      *  color = "red"
      * }
      * ```
-     * 
+     *
      * This above code is equivalent to the following DOT code.
-     * 
+     *
      * ```dot
      * digraph a {
      * color="red";
@@ -922,18 +922,17 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
             setRootGraph(it)
         }
 
-
     /**
      * Create a strict graph and set it as a root graph.
-     * 
+     *
      * @param block A block to create a strict graph.
      * @return A strict graph.
-     * 
+     *
      * ## Example
-     * 
+     *
      * If you want to create a strict graph with an ID "a" and set a color of the graph to "red",
      * you can use the following code.
-     * 
+     *
      * ```kotlin
      * strict.graph("a") {
      *   color = "red"
@@ -941,7 +940,7 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
      * ```
      *
      * This above code is equivalent to the following DOT code.
-     * 
+     *
      * ```dot
      * strict graph a {
      *   color="red";
@@ -960,25 +959,25 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
 
     /**
      * Create a strict digraph and set it as a root graph.
-     * 
+     *
      * @param id An ID of the strict digraph.
      * @param comment A comment of the strict digraph.
      * @param block A block to create a strict digraph.
      * @return A strict digraph.
-     * 
+     *
      * ## Example
-     * 
+     *
      * If you want to create a strict digraph with an ID "a" and set a color of the graph to "red",
      * you can use the following code.
-     * 
+     *
      * ```kotlin
      * strict.digraph("a") {
      *   color = "red"
      * }
      * ```
-     * 
+     *
      * This above code is equivalent to the following DOT code.
-     * 
+     *
      * ```dot
      * strict digraph a {
      *   color="red";
@@ -1001,23 +1000,23 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
 
     /**
      * Create a strict graph and set it as a root graph.
-     * 
+     *
      * @param block A block to create a strict graph.
      * @return A strict graph.
-     * 
+     *
      * ## Example
-     * 
+     *
      * If you want to create a strict graph and set a color of the graph to "red",
      * you can use the following code.
-     * 
+     *
      * ```kotlin
      * strict.graph {
      *   color = "red"
      * }
      * ```
-     * 
+     *
      * This above code is equivalent to the following DOT code.
-     * 
+     *
      * ```dot
      * strict graph {
      *   color="red";
@@ -1036,25 +1035,25 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
 
     /**
      * Create a strict graph and set it as a root graph.
-     * 
+     *
      * @param id An ID of the strict graph.
      * @param comment A comment of the strict graph.
      * @param block A block to create a strict graph.
      * @return A strict graph.
-     * 
+     *
      * ## Example
-     * 
+     *
      * If you want to create a strict graph with an ID "a" and set a color of the graph to "red",
      * you can use the following code.
-     * 
+     *
      * ```kotlin
      * strict.graph("a") {
      *   color = "red"
      * }
      * ```
-     * 
+     *
      * This above code is equivalent to the following DOT code.
-     * 
+     *
      * ```dot
      * strict graph a {
      *   color="red";
