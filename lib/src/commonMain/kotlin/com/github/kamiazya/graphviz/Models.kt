@@ -187,16 +187,16 @@ public data class ForwardRefNode(
 }
 
 /**
- * EdgeTargetList is a collection of edge targets.
+ * EdgeTargetCluster is a collection of edge targets.
  */
-interface ClusterEdgeTarget : Collection<NodeRef>, EdgeDistribution
+interface EdgeTargetCluster : Collection<NodeRef>, EdgeDistribution
 
 /**
  * EdgeTargetList is a collection of edge targets.
  */
 class EdgeTargetList(
     private val targets: MutableList<NodeRef>
-) : ClusterEdgeTarget, MutableList<NodeRef> by targets {
+) : EdgeTargetCluster, MutableList<NodeRef> by targets {
     constructor(vararg targets: NodeRef) : this(targets.toMutableList())
 }
 
@@ -429,8 +429,7 @@ public interface HasEdgeAttributeGroupModel {
 public interface HasAttributeGroups :
     HasGraphAttributes,
     HasNodeAttributeGroupModel,
-    HasEdgeAttributeGroupModel,
-    GroupGroupAttributeDsl
+    HasEdgeAttributeGroupModel
 
 /**
  * HasRootGraph is an interface for models that have a root graph.
@@ -571,8 +570,6 @@ public interface HasContext {
      * A model context.
      */
     val context: ModelContext
-
-    // fun <T : HasContext>with(context: ModelContext, @DotDslMarker T.() -> Unit): T
 }
 
 /**
@@ -688,76 +685,7 @@ public interface HasSubgraphs {
 /**
  * DotModel is an interface for dot models.
  */
-public interface DotModel : HasComment, HasRootGraph, HasContext, ContextDsl {
-    fun graph(
-        id: String? = null,
-        comment: String? = null,
-        block: RootGraphModel.() -> Unit
-    ): RootGraphModel =
-        super<ContextDsl>.graph(id, comment, strict = false, block).also { setRootGraph(it) }
-
-    fun digraph(
-        id: String? = null,
-        comment: String? = null,
-        block: RootGraphModel.() -> Unit
-    ): RootGraphModel =
-        super<ContextDsl>.digraph(
-            id,
-            comment,
-            strict = false,
-            block,
-        ).also {
-            setRootGraph(it)
-        }
-
-    override infix fun strict.digraph(block: RootGraphModel.() -> Unit): RootGraphModel =
-        super<ContextDsl>.digraph(
-            id = null,
-            comment = null,
-            strict = true,
-            block = block,
-        ).also {
-            setRootGraph(it)
-        }
-
-    override fun strict.digraph(
-        id: String,
-        comment: String?,
-        block: RootGraphModel.() -> Unit
-    ): RootGraphModel =
-        super<ContextDsl>.digraph(
-            id,
-            comment,
-            strict = true,
-            block,
-        ).also {
-            setRootGraph(it)
-        }
-
-    override infix fun strict.graph(block: RootGraphModel.() -> Unit): RootGraphModel =
-        super<ContextDsl>.graph(
-            id = null,
-            comment = null,
-            strict = true,
-            block = block,
-        ).also {
-            setRootGraph(it)
-        }
-
-    override fun strict.graph(
-        id: String,
-        comment: String?,
-        block: RootGraphModel.() -> Unit
-    ): RootGraphModel =
-        super<ContextDsl>.graph(
-            id,
-            comment,
-            strict = true,
-            block,
-        ).also {
-            setRootGraph(it)
-        }
-}
+public interface DotModel : HasComment, HasRootGraph, HasContext
 
 /**
  * EdgeModel is an interface for edge models.
@@ -775,26 +703,7 @@ public interface BaseGraphModel :
     HasEdges,
     HasSubgraphs,
     HasContext,
-    HasAttributeGroups,
-    ContextDsl,
-    ApplyNodeAttibuteGroupDsl,
-    ApplyEdgeAttibuteGroupDsl,
-    GroupGroupAttributeDsl {
-
-    override fun node(id: String, comment: String?, block: NodeModel.() -> Unit): NodeModel =
-        super<ContextDsl>.node(id, comment, block).also { addNode(it) }
-
-    override fun edge(
-        first: EdgeDistribution,
-        second: EdgeDistribution,
-        vararg others: EdgeDistribution,
-        comment: String?,
-        block: EdgeModel.() -> Unit
-    ): EdgeModel = super<ContextDsl>.edge(first, second, *others, comment = comment, block = block).also { addEdge(it) }
-
-    override fun subgraph(id: String?, comment: String?, block: SubgraphModel.() -> Unit): SubgraphModel =
-        super<ContextDsl>.subgraph(id, comment, block).also { addSubgraph(it) }
-}
+    HasAttributeGroups
 
 /**
  * RootGraphModel is an interface for root graph models.

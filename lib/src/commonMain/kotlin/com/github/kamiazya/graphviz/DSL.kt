@@ -4,7 +4,7 @@ package com.github.kamiazya.graphviz
 annotation class DotDslMarker
 
 @DotDslMarker
-public interface CreateNodeDsl : HasContext {
+public interface CreateNodeFromContextDsl : HasContext {
     /**
      * Create a node.
      *
@@ -33,9 +33,8 @@ public interface CreateNodeDsl : HasContext {
     fun node(
         id: String,
         comment: String? = null,
-        block: NodeModel.() -> Unit = {
-        }
-    ): NodeModel = context.createNode(id = id, comment = comment).apply(block)
+        block: NodeScope.() -> Unit = {}
+    ): NodeModel = NodeScope(context.createNode(id = id, comment = comment)).apply(block)
 }
 
 @DotDslMarker
@@ -65,11 +64,11 @@ public interface ApplyNodeAttibuteGroupDsl : HasNodeAttributeGroupModel {
      * };
      * ```
      */
-    fun node(block: NodeAttributeGroupModel.() -> Unit) = nodeAttributes.block()
+    fun node(block: NodeAttributeGroupScope.() -> Unit) = NodeAttributeGroupScope(nodeAttributes).block()
 }
 
 @DotDslMarker
-public interface CreateEdgeDsl : HasContext {
+public interface CreateEdgeFromContextDsl : HasContext {
     /**
      * Create an edge.
      * @param distributions A list of edge distributions.
@@ -133,8 +132,8 @@ public interface CreateEdgeDsl : HasContext {
         second: EdgeDistribution,
         vararg others: EdgeDistribution,
         comment: String? = null,
-        block: EdgeModel.() -> Unit = {}
-    ): EdgeModel = context.createEdge(listOf(first, second, *others), comment = comment).apply(block)
+        block: EdgeScope.() -> Unit = {}
+    ): EdgeModel = EdgeScope(context.createEdge(listOf(first, second, *others), comment = comment)).apply(block)
 
     /**
      * Apply a block to edge.
@@ -161,7 +160,7 @@ public interface CreateEdgeDsl : HasContext {
      * };
      * ```
      */
-    operator fun EdgeModel.invoke(block: EdgeModel.() -> Unit): EdgeModel = apply(block)
+    operator fun EdgeModel.invoke(block: EdgeScope.() -> Unit): EdgeModel = EdgeScope(this).apply(block)
 
     /**
      * Append an edge distribution to an edge.
@@ -320,13 +319,11 @@ public interface ApplyEdgeAttibuteGroupDsl : HasEdgeAttributeGroupModel {
      * };
      * ```
      */
-    fun edge(block: EdgeAttributeGroupModel.() -> Unit) {
-        edgeAttributes.block()
-    }
+    fun edge(block: EdgeAttributeGroupScope.() -> Unit) = EdgeAttributeGroupScope(edgeAttributes).block()
 }
 
 @DotDslMarker
-public interface CreateRefDsl {
+public interface CreateForwardRefDsl {
     /**
      * Create a forward reference of a node by String.
      *
@@ -377,11 +374,11 @@ public interface CreateRefDsl {
 }
 
 @DotDslMarker
-public interface CreateRefsDsl {
+public interface CreateEdgeTargetClusterDsl {
     /**
      * Create a cluster of node references.
      */
-    fun refs(vararg refs: NodeRef): ClusterEdgeTarget = EdgeTargetList(*refs)
+    fun clusterOf(vararg refs: NodeRef): EdgeTargetCluster = EdgeTargetList(*refs)
 
     /**
      * Create a cluster of node references.
@@ -400,7 +397,7 @@ public interface CreateRefsDsl {
      * a -> { b, c };
      * ```
      */
-    infix fun String.and(other: NodeRef): ClusterEdgeTarget = EdgeTargetList(ForwardRefNode(this), other)
+    infix fun String.and(other: NodeRef): EdgeTargetCluster = EdgeTargetList(ForwardRefNode.from(this), other)
 
     /**
      * Create a cluster of node references.
@@ -421,7 +418,7 @@ public interface CreateRefsDsl {
      * a -> { b, c };
      * ```
      */
-    infix fun NodeRef.and(other: String): ClusterEdgeTarget = EdgeTargetList(this, ForwardRefNode(other))
+    infix fun NodeRef.and(other: String): EdgeTargetCluster = EdgeTargetList(this, ForwardRefNode.from(other))
 
     /**
      * Create a cluster of node references.
@@ -446,7 +443,7 @@ public interface CreateRefsDsl {
      * a -> { b, c };
      * ```
      */
-    infix fun NodeRef.and(other: NodeRef): ClusterEdgeTarget = EdgeTargetList(this, other)
+    infix fun NodeRef.and(other: NodeRef): EdgeTargetCluster = EdgeTargetList(this, other)
 
     /**
      * Create a cluster of node references.
@@ -472,7 +469,7 @@ public interface CreateRefsDsl {
      * a -> { b, c, d };
      * ```
      */
-    infix fun ClusterEdgeTarget.and(other: NodeRef): ClusterEdgeTarget = this and other
+    infix fun EdgeTargetCluster.and(other: NodeRef): EdgeTargetCluster = this and other
 
     /**
      * Create a cluster of node references.
@@ -496,11 +493,11 @@ public interface CreateRefsDsl {
      * a -> { b, c, d };
      * ```
      */
-    infix fun ClusterEdgeTarget.and(other: String): ClusterEdgeTarget = this and ForwardRefNode(other)
+    infix fun EdgeTargetCluster.and(other: String): EdgeTargetCluster = this and ForwardRefNode.from(other)
 }
 
 @DotDslMarker
-interface GroupGroupAttributeDsl : HasGraphAttributes {
+interface ApplyGroupAttibuteGroupDsl : HasGraphAttributes {
 
     /**
      * A group of graph attributes.
@@ -526,14 +523,14 @@ interface GroupGroupAttributeDsl : HasGraphAttributes {
      *  ];
      * };
      */
-    fun graph(block: GraphAttributeGroupModel.() -> Unit) = graphAttributes.block()
+    fun graph(block: GraphAttributeGroupScope.() -> Unit) = GraphAttributeGroupScope(graphAttributes).block()
 }
 
 @Suppress("ClassNaming")
 public object strict
 
 @DotDslMarker
-public interface CreateRootGraphDsl : HasContext {
+public interface CreateRootGraphFromContextDsl : HasContext {
 
     /**
      * Create a graph.
@@ -567,8 +564,8 @@ public interface CreateRootGraphDsl : HasContext {
         id: String? = null,
         comment: String? = null,
         strict: Boolean? = null,
-        block: RootGraphModel.() -> Unit
-    ): RootGraphModel = context.createGraph(strict = false, id = id, comment = comment).apply(block)
+        block: RootGraphScope.() -> Unit
+    ): RootGraphModel = RootGraphScope(context.createGraph(strict = false, id = id, comment = comment)).apply(block)
 
     /**
      * Create a digraph.
@@ -593,8 +590,8 @@ public interface CreateRootGraphDsl : HasContext {
         id: String? = null,
         comment: String? = null,
         strict: Boolean? = null,
-        block: RootGraphModel.() -> Unit
-    ): RootGraphModel = context.createDigraph(strict = false, id = id, comment = comment).apply(block)
+        block: RootGraphScope.() -> Unit
+    ): RootGraphModel = RootGraphScope(context.createDigraph(strict = false, id = id, comment = comment)).apply(block)
 
     /**
      * Create a strict graph.
@@ -620,8 +617,8 @@ public interface CreateRootGraphDsl : HasContext {
      * };
      * ```
      */
-    infix fun strict.digraph(block: RootGraphModel.() -> Unit): RootGraphModel =
-        context.createDigraph(strict = true).apply(block)
+    infix fun strict.digraph(block: RootGraphScope.() -> Unit): RootGraphModel =
+        RootGraphScope(context.createDigraph(strict = true)).apply(block)
 
     /**
      * Create a strict graph.
@@ -652,9 +649,9 @@ public interface CreateRootGraphDsl : HasContext {
     fun strict.digraph(
         id: String,
         comment: String? = null,
-        block: RootGraphModel.() -> Unit,
+        block: RootGraphScope.() -> Unit,
     ): RootGraphModel =
-        context.createDigraph(strict = true, id = id, comment = comment).apply(block)
+        RootGraphScope(context.createDigraph(strict = true, id = id, comment = comment)).apply(block)
 
     /**
      * Create a strict graph.
@@ -679,8 +676,8 @@ public interface CreateRootGraphDsl : HasContext {
      * };
      * ```
      */
-    infix fun strict.graph(block: RootGraphModel.() -> Unit): RootGraphModel =
-        context.createGraph(strict = true).apply(block)
+    infix fun strict.graph(block: RootGraphScope.() -> Unit): RootGraphModel =
+        RootGraphScope(context.createGraph(strict = true)).apply(block)
 
     /**
      * Create a strict graph.
@@ -710,13 +707,13 @@ public interface CreateRootGraphDsl : HasContext {
     fun strict.graph(
         id: String,
         comment: String? = null,
-        block: RootGraphModel.() -> Unit,
+        block: RootGraphScope.() -> Unit,
     ): RootGraphModel =
-        context.createGraph(strict = true, id = id, comment = comment).apply(block)
+        RootGraphScope(context.createGraph(strict = true, id = id, comment = comment)).apply(block)
 }
 
 @DotDslMarker
-public interface CreateSubgraphDsl : HasContext {
+public interface CreateSubgraphFromContextDsl : HasContext {
     /**
      * Create a subgraph.
      *
@@ -747,9 +744,9 @@ public interface CreateSubgraphDsl : HasContext {
     fun subgraph(
         id: String? = null,
         comment: String? = null,
-        block: SubgraphModel.() -> Unit,
+        block: SubgraphScope.() -> Unit,
     ): SubgraphModel =
-        context.createSubgraph(id = id, comment = comment).apply(block)
+        SubgraphScope(context.createSubgraph(id = id, comment = comment)).apply(block)
 }
 
 /**
@@ -757,13 +754,327 @@ public interface CreateSubgraphDsl : HasContext {
  *
  * This interface is a collection of DSLs to create a DOT.
  */
-public interface ContextDsl :
-    CreateNodeDsl,
-    CreateEdgeDsl,
-    CreateRefDsl,
-    CreateRefsDsl,
-    CreateRootGraphDsl,
-    CreateSubgraphDsl
+public interface CreateModelFromContextDsl :
+    CreateNodeFromContextDsl,
+    CreateEdgeFromContextDsl,
+    CreateRootGraphFromContextDsl,
+    CreateSubgraphFromContextDsl,
+    CreateForwardRefDsl,
+    CreateEdgeTargetClusterDsl
+
+public interface BaseGraphScope<T : BaseGraphModel> :
+    CreateModelFromContextDsl,
+    ApplyNodeAttibuteGroupDsl,
+    ApplyEdgeAttibuteGroupDsl,
+    ApplyGroupAttibuteGroupDsl,
+    BaseGraphModel {
+
+    /**
+     * Create a node and add it to the graph.
+     * @param id An ID of the node.
+     * @param comment A comment of the node.
+     * @param block A block to create a node.
+     * @return A node.
+     */
+    override fun node(id: String, comment: String?, block: NodeScope.() -> Unit): NodeModel =
+        super<CreateModelFromContextDsl>.node(id, comment, block).also { addNode(it) }
+
+    /**
+     * Create an edge and add it to the graph.
+     * @param first An edge distribution.
+     * @param second An edge distribution.
+     * @param others A list of edge distributions.
+     * @param comment A comment of the edge.
+     * @param block A block to create an edge.
+     * @return An edge.
+     */
+    override fun edge(
+        first: EdgeDistribution,
+        second: EdgeDistribution,
+        vararg others: EdgeDistribution,
+        comment: String?,
+        block: EdgeScope.() -> Unit
+    ): EdgeModel = super<CreateModelFromContextDsl>.edge(
+        first,
+        second,
+        *others,
+        comment = comment,
+        block = block
+    ).also { addEdge(it) }
+
+    /**
+     * Create a subgraph and add it to the graph.
+     *
+     * @param id An ID of the subgraph.
+     * @param comment A comment of the subgraph.
+     * @param block A block to create a subgraph.
+     * @return A subgraph.
+     */
+    override fun subgraph(id: String?, comment: String?, block: SubgraphScope.() -> Unit): SubgraphModel =
+        super<CreateModelFromContextDsl>.subgraph(id, comment, block).also { addSubgraph(it) }
+}
+
+public class NodeScope(
+    private val node: NodeModel
+) : NodeModel by node
+
+public class EdgeScope(
+    private val edge: EdgeModel
+) : EdgeModel by edge
+
+public class NodeAttributeGroupScope(
+    private val nodeAttributeGroup: NodeAttributeGroupModel
+) : NodeAttributeGroupModel by nodeAttributeGroup
+
+public class EdgeAttributeGroupScope(
+    private val edgeAttributeGroup: EdgeAttributeGroupModel
+) : EdgeAttributeGroupModel by edgeAttributeGroup
+
+public class GraphAttributeGroupScope(
+    private val graphAttributeGroup: GraphAttributeGroupModel
+) : GraphAttributeGroupModel by graphAttributeGroup
+
+public class RootGraphScope(
+    private val rootGraph: RootGraphModel
+) :
+    BaseGraphScope<RootGraphModel>,
+    RootGraphModel by rootGraph
+
+public class SubgraphScope(
+    private val subgraph: SubgraphModel
+) :
+    BaseGraphScope<SubgraphModel>,
+    SubgraphModel by subgraph
+
+public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromContextDsl {
+    /**
+     * Create a graph and set it as a root graph.
+     * 
+     * @param id An ID of the graph.
+     * @param comment A comment of the graph.
+     * @param block A block to create a graph.
+     * @return A graph.
+     *
+     * ## Example
+     * 
+     * If you want to create a graph with an ID "a" and set a color of the graph to "red",
+     * you can use the following code.
+     * 
+     * ```kotlin
+     * graph("a") {
+     *   color = "red"
+     * }
+     * ```
+     * 
+     * This above code is equivalent to the following DOT code.
+     * 
+     * ```dot
+     * graph a {
+     *  color="red";
+     * };
+     * ```
+     */
+    fun graph(
+        id: String? = null,
+        comment: String? = null,
+        block: RootGraphScope.() -> Unit
+    ): RootGraphModel =
+        super<CreateModelFromContextDsl>.graph(id, comment, strict = false, block).also { setRootGraph(it) }
+
+    /**
+     * Create a digraph and set it as a root graph.
+     * 
+     * @param id An ID of the digraph.
+     * @param comment A comment of the digraph.
+     * @param block A block to create a digraph.
+     * @return A digraph.
+     * 
+     * ## Example
+     * 
+     * If you want to create a digraph with an ID "a" and set a color of the digraph to "red",
+     * you can use the following code.
+     * 
+     * ```kotlin
+     * digraph("a") {
+     *  color = "red"
+     * }
+     * ```
+     * 
+     * This above code is equivalent to the following DOT code.
+     * 
+     * ```dot
+     * digraph a {
+     * color="red";
+     * };
+     * ```
+     */
+    fun digraph(
+        id: String? = null,
+        comment: String? = null,
+        block: RootGraphScope.() -> Unit
+    ): RootGraphModel =
+        super<CreateModelFromContextDsl>.digraph(
+            id,
+            comment,
+            strict = false,
+            block,
+        ).also {
+            setRootGraph(it)
+        }
+
+
+    /**
+     * Create a strict graph and set it as a root graph.
+     * 
+     * @param block A block to create a strict graph.
+     * @return A strict graph.
+     * 
+     * ## Example
+     * 
+     * If you want to create a strict graph with an ID "a" and set a color of the graph to "red",
+     * you can use the following code.
+     * 
+     * ```kotlin
+     * strict.graph("a") {
+     *   color = "red"
+     * }
+     * ```
+     *
+     * This above code is equivalent to the following DOT code.
+     * 
+     * ```dot
+     * strict graph a {
+     *   color="red";
+     * };
+     * ```
+     */
+    override infix fun strict.digraph(block: RootGraphScope.() -> Unit): RootGraphModel =
+        super<CreateModelFromContextDsl>.digraph(
+            id = null,
+            comment = null,
+            strict = true,
+            block = block,
+        ).also {
+            setRootGraph(it)
+        }
+
+    /**
+     * Create a strict digraph and set it as a root graph.
+     * 
+     * @param id An ID of the strict digraph.
+     * @param comment A comment of the strict digraph.
+     * @param block A block to create a strict digraph.
+     * @return A strict digraph.
+     * 
+     * ## Example
+     * 
+     * If you want to create a strict digraph with an ID "a" and set a color of the graph to "red",
+     * you can use the following code.
+     * 
+     * ```kotlin
+     * strict.digraph("a") {
+     *   color = "red"
+     * }
+     * ```
+     * 
+     * This above code is equivalent to the following DOT code.
+     * 
+     * ```dot
+     * strict digraph a {
+     *   color="red";
+     * };
+     * ```
+     */
+    override fun strict.digraph(
+        id: String,
+        comment: String?,
+        block: RootGraphScope.() -> Unit
+    ): RootGraphModel =
+        super<CreateModelFromContextDsl>.digraph(
+            id,
+            comment,
+            strict = true,
+            block,
+        ).also {
+            setRootGraph(it)
+        }
+
+    /**
+     * Create a strict graph and set it as a root graph.
+     * 
+     * @param block A block to create a strict graph.
+     * @return A strict graph.
+     * 
+     * ## Example
+     * 
+     * If you want to create a strict graph and set a color of the graph to "red",
+     * you can use the following code.
+     * 
+     * ```kotlin
+     * strict.graph {
+     *   color = "red"
+     * }
+     * ```
+     * 
+     * This above code is equivalent to the following DOT code.
+     * 
+     * ```dot
+     * strict graph {
+     *   color="red";
+     * };
+     * ```
+     */
+    override infix fun strict.graph(block: RootGraphScope.() -> Unit): RootGraphModel =
+        super<CreateModelFromContextDsl>.graph(
+            id = null,
+            comment = null,
+            strict = true,
+            block = block,
+        ).also {
+            setRootGraph(it)
+        }
+
+    /**
+     * Create a strict graph and set it as a root graph.
+     * 
+     * @param id An ID of the strict graph.
+     * @param comment A comment of the strict graph.
+     * @param block A block to create a strict graph.
+     * @return A strict graph.
+     * 
+     * ## Example
+     * 
+     * If you want to create a strict graph with an ID "a" and set a color of the graph to "red",
+     * you can use the following code.
+     * 
+     * ```kotlin
+     * strict.graph("a") {
+     *   color = "red"
+     * }
+     * ```
+     * 
+     * This above code is equivalent to the following DOT code.
+     * 
+     * ```dot
+     * strict graph a {
+     *   color="red";
+     * };
+     * ```
+     */
+    override fun strict.graph(
+        id: String,
+        comment: String?,
+        block: RootGraphScope.() -> Unit
+    ): RootGraphModel =
+        super<CreateModelFromContextDsl>.graph(
+            id,
+            comment,
+            strict = true,
+            block,
+        ).also {
+            setRootGraph(it)
+        }
+}
 
 /**
  * Enter the DOT DSL.
@@ -777,5 +1088,5 @@ public interface ContextDsl :
 fun dot(
     comment: String? = null,
     context: ModelContext = ModelContext.default,
-    block: DotModel.() -> Unit
-): DotModel = context.createDot(comment).apply(block)
+    block: DotScope.() -> Unit
+): DotModel = DotScope(context.createDot(comment)).apply(block)
