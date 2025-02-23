@@ -448,7 +448,7 @@ public interface HasRootGraph {
 
     /**
      * Get the root graph or null.
-     * 
+     *
      * @return A root graph if exists.
      *        null if not exists.
      */
@@ -507,11 +507,22 @@ public interface HasEdgeDistributions {
 public interface ModelContext {
     /**
      * Create a dot.
+     *
      * @param comment A comment of the dot.
+     * @param context A context of the dot.
+     * @param root A root graph of the dot.
      * @param block A block to create a dot.
      * @return A dot.
      */
-    fun createDot(comment: String? = null): DotModel = Dot(comment)
+    fun createDot(
+        comment: String? = null,
+        context: ModelContext = this,
+        root: RootGraphModel? = null,
+    ): DotModel = Dot(
+        context = context,
+        comment = comment,
+        root = root,
+    )
 
     /**
      * Create a digraph.
@@ -524,7 +535,7 @@ public interface ModelContext {
         strict: Boolean = false,
         id: String? = null,
         comment: String? = null,
-    ): RootGraphModel = Digraph(strict, id, comment)
+    ): RootGraphModel = Digraph(strict = strict, id = id, comment = comment)
 
     /**
      * Create a graph.
@@ -537,7 +548,7 @@ public interface ModelContext {
         strict: Boolean = false,
         id: String? = null,
         comment: String? = null,
-    ): RootGraphModel = Graph(strict, id, comment)
+    ): RootGraphModel = Graph(strict = strict, id = id, comment = comment)
 
     /**
      * Create a subgraph.
@@ -546,7 +557,10 @@ public interface ModelContext {
      * @param block A block to create a subgraph.
      * @return A subgraph.
      */
-    fun createSubgraph(id: String? = null, comment: String? = null): SubgraphModel = Subgraph(id, comment)
+    fun createSubgraph(id: String? = null, comment: String? = null): SubgraphModel = Subgraph(
+        id = id,
+        comment = comment
+    )
 
     /**
      * Create a node.
@@ -555,7 +569,7 @@ public interface ModelContext {
      * @param block A block to create a node.
      * @return A node.
      */
-    fun createNode(id: String, comment: String? = null): NodeModel = Node(id, comment)
+    fun createNode(id: String, comment: String? = null): NodeModel = Node(id = id, comment = comment)
 
     /**
      * Create an edge.
@@ -564,7 +578,10 @@ public interface ModelContext {
      * @param block A block to create an edge.
      * @return An edge.
      */
-    fun createEdge(targets: List<EdgeDistribution>, comment: String? = null): EdgeModel = Edge(targets, comment)
+    fun createEdge(targets: List<EdgeDistribution>, comment: String? = null): EdgeModel = Edge(
+        targets = targets,
+        comment = comment
+    )
 
     companion object {
         var default: ModelContext = object : ModelContext {}
@@ -700,7 +717,7 @@ public interface HasSubgraphs {
 
     /**
      * Get a subgraph by ID or null.
-     * 
+     *
      * @param id An ID of the subgraph.
      * @return A subgraph if found.
      *       null if not found.

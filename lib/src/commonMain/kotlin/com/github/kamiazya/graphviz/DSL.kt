@@ -1088,4 +1088,9 @@ fun dot(
     comment: String? = null,
     context: ModelContext = ModelContext.default,
     block: DotScope.() -> Unit
-): DotModel = DotScope(context.createDot(comment)).apply(block)
+): DotModel = DotScope(
+    context.createDot(
+        context = context,
+        comment = comment,
+    )
+).apply(block)

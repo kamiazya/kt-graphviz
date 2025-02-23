@@ -4,11 +4,10 @@ package com.github.kamiazya.graphviz
  * Dot is a class for dot models.
  */
 public class Dot(
+    override var context: ModelContext = ModelContext.default,
     override var comment: String? = null,
-) : DotModel {
-    override var graph: RootGraphModel? = null
-    override val context: ModelContext = ModelContext.default
-}
+    override var root: RootGraphModel? = null,
+) : DotModel
 
 /**
  * BaseGraph is a base class for graph models.
