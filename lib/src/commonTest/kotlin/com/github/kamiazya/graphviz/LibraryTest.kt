@@ -145,7 +145,7 @@ class DotTest {
     fun `Dot initializes correctly`() {
         val dot = Dot(comment = "This is a dot model")
         assertEquals("This is a dot model", dot.comment)
-        assertNull(dot.graph)
+        assertNull(dot.root)
         assertEquals(ModelContext.default, dot.context)
     }
 
@@ -153,7 +153,7 @@ class DotTest {
     fun `Dot initializes correctly with default values`() {
         val dot = Dot()
         assertNull(dot.comment)
-        assertNull(dot.graph)
+        assertNull(dot.root)
         assertEquals(ModelContext.default, dot.context)
     }
 }
