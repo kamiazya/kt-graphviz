@@ -2,40 +2,44 @@ package com.github.kamiazya.graphviz
 
 public sealed interface AST {
 
-    public sealed interface DotSTMT : AST
-    public sealed interface GraphSTMT : AST
+    public sealed interface CommonSTMT : AST
+    public sealed interface DotSTMT : AST, CommonSTMT
+    public sealed interface GraphSTMT : AST, CommonSTMT
 
-    public abstract class ParentsAST<STMT : AST>(
+    public abstract class Parents<STMT : AST>(
         val children: List<STMT> = emptyList(),
     )
 
-    public class DotAST : AST, ParentsAST<DotSTMT>()
+    public data class Dot(
+        public val id: Literal?,
+        public val strict: Boolean,
+    ) : AST, DotSTMT, Parents<DotSTMT>()
 
-    public class CommentAST(
+    public data class Comment(
         public val value: String,
         public val kind: Kind,
-    ) : AST, DotSTMT, GraphSTMT {
+    ) : AST, CommonSTMT {
         enum class Kind {
             BLOCK, SLASH, MACRO
         }
     }
 
-    public class GraphAST(
-        public val id: LiteralAST?,
+    public data class Graph(
+        public val id: Literal? = null,
         public val directed: Boolean,
         public val strict: Boolean,
-    ) : AST, DotSTMT, ParentsAST<GraphSTMT>()
+    ) : AST, DotSTMT, Parents<GraphSTMT>()
 
-    public class SubgraphAST(
-        public val id: LiteralAST?,
-    ) : AST, GraphSTMT, ParentsAST<GraphSTMT>()
+    public data class Subgraph(
+        public val id: Literal? = null,
+    ) : AST, GraphSTMT, Parents<GraphSTMT>()
 
-    public class AttributeAST(
-        public val key: LiteralAST,
-        public val value: LiteralAST,
-    ) : AST, DotSTMT, GraphSTMT
+    public data class Attribute(
+        public val key: Literal,
+        public val value: Literal,
+    ) : AST, CommonSTMT
 
-    public class LiteralAST(
+    public data class Literal(
         public val value: String,
         public val quated: Quated,
     ) : AST {
@@ -44,11 +48,11 @@ public sealed interface AST {
         }
     }
 
-    public class NodeAST(
-        public val id: LiteralAST,
-    ) : AST, GraphSTMT
+    public data class Node(
+        public val id: Literal,
+    ) : AST, GraphSTMT, Parents<CommonSTMT>()
 
-    public class EdgeAST(
+    public data class Edge(
         public val targets: List<EdgeDistribution>,
-    ) : AST, GraphSTMT
+    ) : AST, GraphSTMT, Parents<CommonSTMT>()
 }
