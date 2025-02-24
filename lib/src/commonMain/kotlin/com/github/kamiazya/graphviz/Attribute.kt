@@ -31,6 +31,8 @@ public enum class Compass {
             else -> throw IllegalArgumentException("Unsupported value: $value")
         }
     }
+
+    override fun toString(): String = name.lowercase()
 }
 
 // TODO

@@ -3,19 +3,21 @@ package com.github.kamiazya.graphviz
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
+public interface Model
+
 /**
  * Attribute is a pair of key and value.
  */
 public data class Attribute(
     public var key: String,
     public var value: AttributeValue
-)
+) : Model
 
 /**
  * EdgeDistribution is a distribution of edges.
  * It can be a edge target like a node or ID of a node, or a list of edge targets.
  */
-sealed interface EdgeDistribution
+sealed interface EdgeDistribution : Model
 
 /**
  * NodeRef is a target of an edge.
@@ -189,7 +191,7 @@ public data class ForwardRefNode(
 /**
  * EdgeTargetCluster is a collection of edge targets.
  */
-interface EdgeTargetCluster : Collection<NodeRef>, EdgeDistribution
+interface EdgeTargetCluster : List<NodeRef>, EdgeDistribution
 
 /**
  * EdgeTargetList is a collection of edge targets.
@@ -735,17 +737,18 @@ public interface HasSubgraphs {
 /**
  * DotModel is an interface for dot models.
  */
-public interface DotModel : HasComment, HasRootGraph, HasContext
+public interface DotModel : Model, HasComment, HasRootGraph, HasContext
 
 /**
  * EdgeModel is an interface for edge models.
  */
-public interface EdgeModel : HasComment, HasAttributes, HasEdgeDistributions, EdgeAttributeGroupModel
+public interface EdgeModel : Model, HasComment, HasAttributes, HasEdgeDistributions, EdgeAttributeGroupModel
 
 /**
  * BaseGraphModel is an interface for base of graph models.
  */
 public interface BaseGraphModel :
+    Model,
     HasNullableID,
     HasComment,
     HasAttributes,
