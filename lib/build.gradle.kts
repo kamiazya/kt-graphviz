@@ -42,5 +42,5 @@ detekt {
     buildUponDefaultConfig = true
     autoCorrect = true
 
-    source = files("src/commonMain/kotlin")
+    source.setFrom("src/commonMain/kotlin")
 }
