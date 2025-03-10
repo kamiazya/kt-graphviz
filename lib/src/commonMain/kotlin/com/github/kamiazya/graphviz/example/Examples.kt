@@ -1,6 +1,10 @@
-package com.github.kamiazya.graphviz
+package com.github.kamiazya.graphviz.example
 
+import com.github.kamiazya.graphviz.ast.AST
+import com.github.kamiazya.graphviz.ast.from
+import com.github.kamiazya.graphviz.dot
 import com.github.kamiazya.graphviz.model.DotModel
+import com.github.kamiazya.graphviz.model.dsl.strict
 import com.github.kamiazya.graphviz.type.Compass
 
 val dots: List<DotModel> = listOf(
@@ -101,4 +105,4 @@ val dots: List<DotModel> = listOf(
     }
 )
 
-val asts: List<AST> = dots.map { AST.from(it) }
+val asts: List<AST> = dots.map { from(it) }

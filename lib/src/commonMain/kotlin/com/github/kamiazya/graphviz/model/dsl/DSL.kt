@@ -1,4 +1,4 @@
-package com.github.kamiazya.graphviz
+package com.github.kamiazya.graphviz.model.dsl
 
 import com.github.kamiazya.graphviz.model.BaseGraphModel
 import com.github.kamiazya.graphviz.model.DotModel
@@ -25,7 +25,7 @@ import com.github.kamiazya.graphviz.type.Compass
 annotation class DotDslMarker
 
 @DotDslMarker
-public interface CreateNodeFromContextDsl : HasContext {
+public interface CreateNode : HasContext {
     /**
      * Create a node.
      *
@@ -59,7 +59,7 @@ public interface CreateNodeFromContextDsl : HasContext {
 }
 
 @DotDslMarker
-public interface ApplyNodeAttibuteGroupDsl : HasNodeAttributeGroupModel {
+public interface ApplyNodeAttibuteGroup : HasNodeAttributeGroupModel {
     /**
      * Apply a block to node attributes.
      *
@@ -89,7 +89,7 @@ public interface ApplyNodeAttibuteGroupDsl : HasNodeAttributeGroupModel {
 }
 
 @DotDslMarker
-public interface CreateEdgeFromContextDsl : HasContext {
+public interface CreateEdge : HasContext {
     /**
      * Create an edge.
      * @param distributions A list of edge distributions.
@@ -314,7 +314,7 @@ public interface CreateEdgeFromContextDsl : HasContext {
 }
 
 @DotDslMarker
-public interface ApplyEdgeAttibuteGroupDsl : HasEdgeAttributeGroupModel {
+public interface ApplyEdgeAttibuteGroup : HasEdgeAttributeGroupModel {
     /**
      * Apply a block to edge attributes.
      *
@@ -344,7 +344,7 @@ public interface ApplyEdgeAttibuteGroupDsl : HasEdgeAttributeGroupModel {
 }
 
 @DotDslMarker
-public interface CreateForwardRefDsl {
+public interface CreateForwardRef {
     /**
      * Create a forward reference of a node by String.
      *
@@ -395,7 +395,7 @@ public interface CreateForwardRefDsl {
 }
 
 @DotDslMarker
-public interface CreateEdgeTargetClusterDsl {
+public interface CreateEdgeTargetCluster {
     /**
      * Create a cluster of node references.
      */
@@ -518,7 +518,7 @@ public interface CreateEdgeTargetClusterDsl {
 }
 
 @DotDslMarker
-interface ApplyGroupAttibuteGroupDsl : HasGraphAttributes {
+interface ApplyGroupAttibuteGroup : HasGraphAttributes {
 
     /**
      * A group of graph attributes.
@@ -551,7 +551,7 @@ interface ApplyGroupAttibuteGroupDsl : HasGraphAttributes {
 public object strict
 
 @DotDslMarker
-public interface CreateRootGraphFromContextDsl : HasContext {
+public interface CreateRootGraph : HasContext {
 
     /**
      * Create a graph.
@@ -734,7 +734,7 @@ public interface CreateRootGraphFromContextDsl : HasContext {
 }
 
 @DotDslMarker
-public interface CreateSubgraphFromContextDsl : HasContext {
+public interface CreateSubgraph : HasContext {
     /**
      * Create a subgraph.
      *
@@ -770,24 +770,16 @@ public interface CreateSubgraphFromContextDsl : HasContext {
         SubgraphScope(context.createSubgraph(id = id, comment = comment)).apply(block)
 }
 
-/**
- * A context of the DOT DSL.
- *
- * This interface is a collection of DSLs to create a DOT.
- */
-public interface CreateModelFromContextDsl :
-    CreateNodeFromContextDsl,
-    CreateEdgeFromContextDsl,
-    CreateRootGraphFromContextDsl,
-    CreateSubgraphFromContextDsl,
-    CreateForwardRefDsl,
-    CreateEdgeTargetClusterDsl
-
 public interface BaseGraphScope<T : BaseGraphModel> :
-    CreateModelFromContextDsl,
-    ApplyNodeAttibuteGroupDsl,
-    ApplyEdgeAttibuteGroupDsl,
-    ApplyGroupAttibuteGroupDsl,
+    CreateNode,
+    CreateEdge,
+    CreateRootGraph,
+    CreateSubgraph,
+    CreateForwardRef,
+    CreateEdgeTargetCluster,
+    ApplyNodeAttibuteGroup,
+    ApplyEdgeAttibuteGroup,
+    ApplyGroupAttibuteGroup,
     BaseGraphModel {
 
     /**
@@ -798,7 +790,7 @@ public interface BaseGraphScope<T : BaseGraphModel> :
      * @return A node.
      */
     override fun node(id: String, comment: String?, block: NodeScope.() -> Unit): NodeModel =
-        super<CreateModelFromContextDsl>.node(id, comment, block).also { addNode(it) }
+        super<CreateNode>.node(id, comment, block).also { addNode(it) }
 
     /**
      * Create an edge and add it to the graph.
@@ -815,7 +807,7 @@ public interface BaseGraphScope<T : BaseGraphModel> :
         vararg others: EdgeDistribution,
         comment: String?,
         block: EdgeScope.() -> Unit
-    ): EdgeModel = super<CreateModelFromContextDsl>.edge(
+    ): EdgeModel = super<CreateEdge>.edge(
         first,
         second,
         *others,
@@ -832,7 +824,7 @@ public interface BaseGraphScope<T : BaseGraphModel> :
      * @return A subgraph.
      */
     override fun subgraph(id: String?, comment: String?, block: SubgraphScope.() -> Unit): SubgraphModel =
-        super<CreateModelFromContextDsl>.subgraph(id, comment, block).also { addSubgraph(it) }
+        super<CreateSubgraph>.subgraph(id, comment, block).also { addSubgraph(it) }
 }
 
 public class NodeScope(
@@ -867,7 +859,13 @@ public class SubgraphScope(
     BaseGraphScope<SubgraphModel>,
     SubgraphModel by subgraph
 
-public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromContextDsl {
+public class DotScope(val dot: DotModel) :
+    DotModel by dot,
+    CreateRootGraph,
+    CreateNode,
+    CreateEdge,
+    CreateSubgraph,
+    CreateForwardRef {
     /**
      * Create a graph and set it as a root graph.
      *
@@ -900,7 +898,7 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
         comment: String? = null,
         block: RootGraphScope.() -> Unit
     ): RootGraphModel =
-        super<CreateModelFromContextDsl>.graph(id, comment, strict = false, block).also { setRootGraph(it) }
+        super<CreateRootGraph>.graph(id, comment, strict = false, block).also { setRootGraph(it) }
 
     /**
      * Create a digraph and set it as a root graph.
@@ -934,7 +932,7 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
         comment: String? = null,
         block: RootGraphScope.() -> Unit
     ): RootGraphModel =
-        super<CreateModelFromContextDsl>.digraph(
+        super<CreateRootGraph>.digraph(
             id,
             comment,
             strict = false,
@@ -969,7 +967,7 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
      * ```
      */
     override infix fun strict.digraph(block: RootGraphScope.() -> Unit): RootGraphModel =
-        super<CreateModelFromContextDsl>.digraph(
+        super<CreateRootGraph>.digraph(
             id = null,
             comment = null,
             strict = true,
@@ -1010,7 +1008,7 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
         comment: String?,
         block: RootGraphScope.() -> Unit
     ): RootGraphModel =
-        super<CreateModelFromContextDsl>.digraph(
+        super<CreateRootGraph>.digraph(
             id,
             comment,
             strict = true,
@@ -1045,7 +1043,7 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
      * ```
      */
     override infix fun strict.graph(block: RootGraphScope.() -> Unit): RootGraphModel =
-        super<CreateModelFromContextDsl>.graph(
+        super<CreateRootGraph>.graph(
             id = null,
             comment = null,
             strict = true,
@@ -1086,7 +1084,7 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
         comment: String?,
         block: RootGraphScope.() -> Unit
     ): RootGraphModel =
-        super<CreateModelFromContextDsl>.graph(
+        super<CreateRootGraph>.graph(
             id,
             comment,
             strict = true,
@@ -1105,17 +1103,12 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
  * @return A DOT.
  * @see DotModel
  */
-fun dot(
+fun ModelContext.dot(
     comment: String? = null,
-    context: ModelContext? = DEFAULT_MODEL_CONTEXT,
     block: DotScope.() -> Unit
-): DotModel {
-    require(context != null) { "Default model context must be set." }
-
-    return DotScope(
-        context.createDot(
-            context = context,
-            comment = comment,
-        )
-    ).apply(block)
-}
+): DotModel = DotScope(
+    createDot(
+        context = this,
+        comment = comment,
+    )
+).apply(block)

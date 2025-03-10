@@ -14,6 +14,8 @@ import com.github.kamiazya.graphviz.model.NodeAttributeGroupModel
 import com.github.kamiazya.graphviz.model.NodeModel
 import com.github.kamiazya.graphviz.model.RootGraphModel
 import com.github.kamiazya.graphviz.model.SubgraphModel
+import com.github.kamiazya.graphviz.model.dsl.DotScope
+import com.github.kamiazya.graphviz.model.dsl.dot
 
 /**
  * Dot is a class for dot models.
@@ -187,4 +189,12 @@ interface DefaultModelContext : ModelContext {
     )
 }
 
-var DEFAULT_MODEL_CONTEXT = object : DefaultModelContext {}
+var DEFAULT_MODEL_CONTEXT: ModelContext = object : DefaultModelContext {}
+
+fun dot(
+    comment: String? = null,
+    block: DotScope.() -> Unit
+) = DEFAULT_MODEL_CONTEXT.dot(
+    comment = comment,
+    block = block,
+)
