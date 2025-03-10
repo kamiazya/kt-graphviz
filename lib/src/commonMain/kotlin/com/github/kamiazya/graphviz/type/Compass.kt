@@ -1,9 +1,4 @@
-package com.github.kamiazya.graphviz
-
-/**
- * AttributeValue is a value of an attribute.
- */
-public typealias AttributeValue = Any
+package com.github.kamiazya.graphviz.type
 
 /**
  * Compass is a direction of a node.
@@ -33,9 +28,4 @@ public enum class Compass {
     }
 
     override fun toString(): String = name.lowercase()
-}
-
-// TODO
-class Color(val value: String) {
-    override fun toString(): String = value
 }

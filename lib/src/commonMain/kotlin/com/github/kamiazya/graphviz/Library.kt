@@ -1,10 +1,25 @@
 package com.github.kamiazya.graphviz
 
+import com.github.kamiazya.graphviz.model.Attribute
+import com.github.kamiazya.graphviz.model.AttributeGroupModel
+import com.github.kamiazya.graphviz.model.AttributeValueOf
+import com.github.kamiazya.graphviz.model.BaseGraphModel
+import com.github.kamiazya.graphviz.model.DotModel
+import com.github.kamiazya.graphviz.model.EdgeAttributeGroupModel
+import com.github.kamiazya.graphviz.model.EdgeDistribution
+import com.github.kamiazya.graphviz.model.EdgeModel
+import com.github.kamiazya.graphviz.model.GraphAttributeGroupModel
+import com.github.kamiazya.graphviz.model.ModelContext
+import com.github.kamiazya.graphviz.model.NodeAttributeGroupModel
+import com.github.kamiazya.graphviz.model.NodeModel
+import com.github.kamiazya.graphviz.model.RootGraphModel
+import com.github.kamiazya.graphviz.model.SubgraphModel
+
 /**
  * Dot is a class for dot models.
  */
 public class Dot(
-    override var context: ModelContext = ModelContext.default,
+    override var context: ModelContext,
     override var comment: String? = null,
     override var root: RootGraphModel? = null,
 ) : DotModel
@@ -13,7 +28,7 @@ public class Dot(
  * BaseGraph is a base class for graph models.
  */
 public abstract class BaseGraph(
-    override val context: ModelContext = ModelContext.default,
+    override val context: ModelContext,
     override var id: String?,
     override var comment: String? = null,
 ) : GraphAttributeGroup(), BaseGraphModel {
@@ -46,11 +61,13 @@ public open class GraphAttributeGroup : AttributeGroup(), GraphAttributeGroupMod
  * RootGraph is a class for root graph models.
  */
 public abstract class RootGraph(
+    context: ModelContext,
     override val directed: Boolean,
     override var strict: Boolean,
     id: String?,
     comment: String? = null,
 ) : RootGraphModel, BaseGraph(
+    context = context,
     id = id,
     comment = comment,
 )
@@ -59,10 +76,12 @@ public abstract class RootGraph(
  * Graph is a class for graph models.
  */
 public class Graph(
+    context: ModelContext,
     strict: Boolean = false,
     id: String?,
     comment: String? = null,
 ) : RootGraph(
+    context = context,
     directed = false,
     strict = strict,
     id = id,
@@ -73,10 +92,12 @@ public class Graph(
  * Digraph is a class for digraph models.
  */
 public class Digraph(
+    context: ModelContext,
     strict: Boolean = false,
     id: String?,
     comment: String? = null,
 ) : RootGraph(
+    context = context,
     directed = true,
     strict = strict,
     id = id,
@@ -114,9 +135,11 @@ class Edge(
  * Subgraph is a class for subgraph models.
  */
 class Subgraph(
+    context: ModelContext,
     override var id: String? = null,
     override var comment: String? = null,
 ) : BaseGraph(
+    context = context,
     id = id,
     comment = comment,
 ),
@@ -126,3 +149,42 @@ class Subgraph(
     override var edges: List<EdgeModel> = emptyList()
     override var subgraphs: List<SubgraphModel> = emptyList()
 }
+
+interface DefaultModelContext : ModelContext {
+    override fun createDot(
+        comment: String?,
+        context: ModelContext,
+        root: RootGraphModel?,
+    ) = Dot(
+        context = context,
+        comment = comment,
+        root = root,
+    )
+
+    override fun createDigraph(
+        strict: Boolean,
+        id: String?,
+        comment: String?,
+    ) = Digraph(context = this, strict = strict, id = id, comment = comment)
+
+    override fun createGraph(
+        strict: Boolean,
+        id: String?,
+        comment: String?,
+    ) = Graph(context = this, strict = strict, id = id, comment = comment)
+
+    override fun createSubgraph(id: String?, comment: String?) = Subgraph(
+        context = this,
+        id = id,
+        comment = comment
+    )
+
+    override fun createNode(id: String, comment: String?) = Node(id = id, comment = comment)
+
+    override fun createEdge(targets: List<EdgeDistribution>, comment: String?) = Edge(
+        targets = targets,
+        comment = comment
+    )
+}
+
+var DEFAULT_MODEL_CONTEXT = object : DefaultModelContext {}

@@ -1,5 +1,26 @@
 package com.github.kamiazya.graphviz
 
+import com.github.kamiazya.graphviz.model.BaseGraphModel
+import com.github.kamiazya.graphviz.model.DotModel
+import com.github.kamiazya.graphviz.model.EdgeAttributeGroupModel
+import com.github.kamiazya.graphviz.model.EdgeDistribution
+import com.github.kamiazya.graphviz.model.EdgeModel
+import com.github.kamiazya.graphviz.model.EdgeTargetCluster
+import com.github.kamiazya.graphviz.model.EdgeTargetList
+import com.github.kamiazya.graphviz.model.ForwardRefNode
+import com.github.kamiazya.graphviz.model.GraphAttributeGroupModel
+import com.github.kamiazya.graphviz.model.HasContext
+import com.github.kamiazya.graphviz.model.HasEdgeAttributeGroupModel
+import com.github.kamiazya.graphviz.model.HasGraphAttributes
+import com.github.kamiazya.graphviz.model.HasNodeAttributeGroupModel
+import com.github.kamiazya.graphviz.model.ModelContext
+import com.github.kamiazya.graphviz.model.NodeAttributeGroupModel
+import com.github.kamiazya.graphviz.model.NodeModel
+import com.github.kamiazya.graphviz.model.NodeRef
+import com.github.kamiazya.graphviz.model.RootGraphModel
+import com.github.kamiazya.graphviz.model.SubgraphModel
+import com.github.kamiazya.graphviz.type.Compass
+
 @DslMarker
 annotation class DotDslMarker
 
@@ -1086,11 +1107,15 @@ public class DotScope(val dot: DotModel) : DotModel by dot, CreateModelFromConte
  */
 fun dot(
     comment: String? = null,
-    context: ModelContext = ModelContext.default,
+    context: ModelContext? = DEFAULT_MODEL_CONTEXT,
     block: DotScope.() -> Unit
-): DotModel = DotScope(
-    context.createDot(
-        context = context,
-        comment = comment,
-    )
-).apply(block)
+): DotModel {
+    require(context != null) { "Default model context must be set." }
+
+    return DotScope(
+        context.createDot(
+            context = context,
+            comment = comment,
+        )
+    ).apply(block)
+}

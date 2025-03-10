@@ -1,5 +1,20 @@
 package com.github.kamiazya.graphviz
 
+import com.github.kamiazya.graphviz.model.Attribute
+import com.github.kamiazya.graphviz.model.AttributeGroupModel
+import com.github.kamiazya.graphviz.model.DotModel
+import com.github.kamiazya.graphviz.model.EdgeAttributeGroupModel
+import com.github.kamiazya.graphviz.model.EdgeDistribution
+import com.github.kamiazya.graphviz.model.EdgeModel
+import com.github.kamiazya.graphviz.model.EdgeTargetCluster
+import com.github.kamiazya.graphviz.model.ForwardRefNode
+import com.github.kamiazya.graphviz.model.GraphAttributeGroupModel
+import com.github.kamiazya.graphviz.model.NodeAttributeGroupModel
+import com.github.kamiazya.graphviz.model.NodeModel
+import com.github.kamiazya.graphviz.model.NodeRef
+import com.github.kamiazya.graphviz.model.RootGraphModel
+import com.github.kamiazya.graphviz.model.SubgraphModel
+
 public sealed interface AST {
 
     @DslMarker
@@ -35,14 +50,9 @@ public sealed interface AST {
     public data class CommentAST(
         public var value: String = "",
         public var kind: Kind,
-        val init: CommentAST.() -> Unit = {},
     ) : AST, AttributesSTMT, DotSTMT, GraphSTMT {
         enum class Kind {
             BLOCK, SLASH, MACRO
-        }
-
-        public operator fun String.unaryPlus() {
-            value += this
         }
     }
 
@@ -106,11 +116,12 @@ public sealed interface AST {
         var init: MutableList<AttributesSTMT>.() -> Unit = {},
     ) : AST, GraphSTMT, Parents<AttributesSTMT>(init)
 
+    @Suppress("TooManyFunctions")
     open class ModelToAST {
 
         fun from(model: DotModel): DotAST = DotAST(
             comment = model.comment?.let {
-                CommentAST(kind = CommentAST.Kind.BLOCK) { +it }
+                CommentAST(value = it, kind = CommentAST.Kind.BLOCK)
             }
         ) {
             model.root?.let {
@@ -120,7 +131,7 @@ public sealed interface AST {
 
         fun from(model: RootGraphModel): Sequence<DotSTMT> = sequence {
             model.comment?.let {
-                yield(CommentAST(kind = CommentAST.Kind.BLOCK) { +it })
+                yield(CommentAST(value = it, kind = CommentAST.Kind.BLOCK))
             }
             yield(
                 RootGraphAST(
@@ -161,9 +172,7 @@ public sealed interface AST {
         fun from(model: SubgraphModel): Sequence<GraphSTMT> = sequence {
             model.comment?.let {
                 yield(
-                    CommentAST(kind = CommentAST.Kind.BLOCK) {
-                        +it
-                    }
+                    CommentAST(value = it, kind = CommentAST.Kind.BLOCK)
                 )
             }
             yield(
@@ -188,9 +197,7 @@ public sealed interface AST {
         fun from(model: NodeModel): Sequence<GraphSTMT> = sequence {
             model.comment?.let {
                 yield(
-                    CommentAST(kind = CommentAST.Kind.BLOCK) {
-                        +it
-                    }
+                    CommentAST(value = it, kind = CommentAST.Kind.BLOCK)
                 )
             }
             yield(
@@ -209,9 +216,7 @@ public sealed interface AST {
         fun from(model: EdgeModel): Sequence<GraphSTMT> = sequence {
             model.comment?.let {
                 yield(
-                    CommentAST(kind = CommentAST.Kind.BLOCK) {
-                        +it
-                    }
+                    CommentAST(value = it, kind = CommentAST.Kind.BLOCK)
                 )
             }
             yield(
@@ -255,4 +260,8 @@ public sealed interface AST {
         )
     }
 
+    companion object {
+        fun from(dot: DotModel): DotAST =
+            ModelToAST().from(dot)
+    }
 }
