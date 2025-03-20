@@ -1,6 +1,6 @@
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    kotlin("multiplatform") version "2.1.0"
+    kotlin("multiplatform") version "2.1.10"
     id("io.gitlab.arturbosch.detekt") version "1.23.7"
 }
 
@@ -26,7 +26,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-common:2.1.10")
             }
         }
         val commonTest by getting {
