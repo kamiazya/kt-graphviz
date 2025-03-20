@@ -1,11 +1,13 @@
 package com.github.kamiazya.graphviz.model
 
+import com.github.kamiazya.graphviz.ast.GraphSTMT
+import com.github.kamiazya.graphviz.ast.dsl.GraphSTMTBuilder
 import com.github.kamiazya.graphviz.type.Compass
 
 /**
  * NodeModel is an interface for node models.
  */
-public interface NodeModel : HasID, HasComment, HasAttributes, NodeAttributeGroupModel, NodeRef {
+public interface NodeModel : Model<GraphSTMT>, HasID, HasComment, HasAttributes, NodeAttributeGroup {
     /**
      * Convert to a forward reference of node.
      *
@@ -14,4 +16,8 @@ public interface NodeModel : HasID, HasComment, HasAttributes, NodeAttributeGrou
      * @return A ForwardRefNode.
      */
     public fun toRef(port: String? = null, compass: Compass? = null): ForwardRefNode = ForwardRefNode(id, port, compass)
+
+    override fun toAST() = GraphSTMTBuilder {
+        //
+    }.stmts
 }

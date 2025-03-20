@@ -4,7 +4,7 @@ package com.github.kamiazya.graphviz.model
  * BaseGraphModel is an interface for base of graph models.
  */
 public interface BaseGraphModel :
-    Model,
+    GraphAttributeGroup,
     HasNullableID,
     HasComment,
     HasAttributes,

@@ -1,5 +1,6 @@
 package com.github.kamiazya.graphviz.model
 
+import com.github.kamiazya.graphviz.ast.dsl.EdgeDistributionBuilder
 import com.github.kamiazya.graphviz.type.Compass
 
 /**
@@ -163,4 +164,12 @@ public data class ForwardRefNode(
             return ForwardRefNode(id, port, compass)
         }
     }
+
+    override fun toAST() = EdgeDistributionBuilder {
+        nodeRef(
+            id = literalOf(id),
+            port = port?.let { literalOf(it) },
+            compass = compass?.let { literalOf(it.name) }
+        )
+    }.stmts
 }

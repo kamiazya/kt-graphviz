@@ -1,5 +1,7 @@
 package com.github.kamiazya.graphviz.model
 
+import com.github.kamiazya.graphviz.ast.AttributesSTMT
+import com.github.kamiazya.graphviz.ast.dsl.AttributeSTMTBuilder
 import com.github.kamiazya.graphviz.type.AttributeValue
 
 /**
@@ -8,4 +10,8 @@ import com.github.kamiazya.graphviz.type.AttributeValue
 public data class Attribute(
     public var key: String,
     public var value: AttributeValue
-) : Model
+) : Model<AttributesSTMT> {
+
+    override fun toAST() = AttributeSTMTBuilder {
+    }.stmts
+}

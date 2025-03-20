@@ -1,7 +1,5 @@
 package com.github.kamiazya.graphviz.example
 
-import com.github.kamiazya.graphviz.ast.AST
-import com.github.kamiazya.graphviz.ast.from
 import com.github.kamiazya.graphviz.dot
 import com.github.kamiazya.graphviz.model.DotModel
 import com.github.kamiazya.graphviz.model.dsl.strict
@@ -28,19 +26,19 @@ val dots: List<DotModel> = listOf(
 
             var c = ref("c")
 
-            edge(a, b.toRef("port_of_a", Compass.N), ref("C:s")) {
+            edge(a.toRef(), b.toRef("port_of_a", Compass.N), ref("C:s")) {
                 color = "red"
             }
 
-            (a - b - c) {
+            (a.toRef() - b.toRef() - c) {
                 color = "red"
             }
 
-            ("a" - (a and c)) {
+            ("a" - (a.toRef() and c)) {
                 color = "red"
             }
 
-            ("a" - b - "c") {
+            ("a" - b.toRef() - "c") {
                 color = "red"
             }
 
@@ -104,5 +102,3 @@ val dots: List<DotModel> = listOf(
         }
     }
 )
-
-val asts: List<AST> = dots.map { from(it) }

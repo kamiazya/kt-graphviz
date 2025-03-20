@@ -14,14 +14,14 @@ import kotlin.reflect.KProperty
  *
  * @example simple case
  * ```
- * class TestModel : AttributeGroupModel {
+ * class TestModel : HasAttributes {
  *    var color: String? by AttributeValueOf()
  * }
  * ```
  *
  * @example with actual name
  * ```
- * class TestModel : AttributeGroupModel {
+ * class TestModel : HasAttributes {
  *   var color: String? by AttributeValueOf("actual_color")
  * }
  *
@@ -33,7 +33,7 @@ import kotlin.reflect.KProperty
  *
  * @example with default value
  * ```
- * class TestModel : AttributeGroupModel {
+ * class TestModel : HasAttributes {
  *  var color: String? by AttributeValueOf(defaultValue = "red")
  * }
  *
@@ -56,7 +56,7 @@ public class AttributeValueOf<T, V>(
      */
     private val modifier: ((V) -> V)? = null,
 ) : ReadWriteProperty<T, V?>
-    where T : AttributeGroupModel {
+    where T : HasAttributes {
 
     /**
      * When property is delegated, set the default value.
