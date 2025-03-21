@@ -21,7 +21,7 @@ public interface NodeModel : Model<GraphSTMT>, HasID, HasComment, HasAttributes,
         comment?.let {
             comment(it)
         }
-        node(id.quated()) {
+        node(id.quoted()) {
             for (attr in attributes) {
                 load(attr.toAST())
             }

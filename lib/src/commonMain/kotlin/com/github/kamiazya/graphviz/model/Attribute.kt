@@ -14,8 +14,8 @@ public data class Attribute(
 
     override fun toAST() = AttributeSTMTBuilder {
         attribute(
-            key.unquated(),
-            value.toString().quated(),
+            key.unquoted(),
+            value.toString().quoted(),
         )
     }.stmts
 }

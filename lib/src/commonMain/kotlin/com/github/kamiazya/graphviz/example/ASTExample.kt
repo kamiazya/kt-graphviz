@@ -10,26 +10,26 @@ var asts: List<AST> = listOf(
         rootGraph(
             strict = true,
             directed = true,
-            id = "hoge".unquated()
+            id = "hoge".unquoted()
         ) {
-            node("node1".unquated()) {
-                attribute("color".unquated(), "red".quated())
+            node("node1".unquoted()) {
+                attribute("color".unquoted(), "red".quoted())
             }
 
             edge({
-                nodeRef("a1".unquated())
-                nodeRef("a2".unquated())
+                nodeRef("a1".unquoted())
+                nodeRef("a2".unquoted())
 
                 clusterNodeRefs(
-                    nodeRefOf("b".unquated()),
-                    nodeRefOf("c".unquated())
+                    nodeRefOf("b".unquoted()),
+                    nodeRefOf("c".unquoted())
                 )
             }) {
-                attribute("color".unquated(), "blue".quated())
+                attribute("color".unquoted(), "blue".quoted())
             }
 
             subgraph(id = null) {
-                node("node2".quated()) {}
+                node("node2".quoted()) {}
             }
         }
     }

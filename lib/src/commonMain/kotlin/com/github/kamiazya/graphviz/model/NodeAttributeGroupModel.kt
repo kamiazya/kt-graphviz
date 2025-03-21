@@ -19,8 +19,8 @@ public interface NodeAttributeGroupModel : Model<GraphSTMT>, NodeAttributeGroup,
         ) {
             for ((key, value) in attributes) {
                 attribute(
-                    key.unquated(),
-                    value.toString().quated(),
+                    key.unquoted(),
+                    value.toString().quoted(),
                 )
             }
         }

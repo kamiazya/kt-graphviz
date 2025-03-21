@@ -23,14 +23,14 @@ public interface RootGraphModel : Model<DotSTMT>, BaseGraphModel {
             comment(it)
         }
         rootGraph(
-            id = id?.quated(),
+            id = id?.quoted(),
             strict = strict,
             directed = directed,
         ) {
             for ((key, value) in attributes) {
                 attribute(
-                    key.unquated(),
-                    value.toString().quated(),
+                    key.unquoted(),
+                    value.toString().quoted(),
                 )
             }
             load(graphAttributes.toAST())

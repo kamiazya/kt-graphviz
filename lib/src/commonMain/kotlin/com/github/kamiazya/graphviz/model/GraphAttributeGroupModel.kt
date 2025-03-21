@@ -18,8 +18,8 @@ public interface GraphAttributeGroupModel : Model<GraphSTMT>, GraphAttributeGrou
         ) {
             for ((key, value) in attributes) {
                 attribute(
-                    key.unquated(),
-                    value.toString().quated(),
+                    key.unquoted(),
+                    value.toString().quoted(),
                 )
             }
         }
