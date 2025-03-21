@@ -5,7 +5,10 @@ package com.github.kamiazya.graphviz.model
  */
 public interface HasContext {
     /**
-     * A model context.
+     * Represents the context associated with a model, providing the necessary
+     * environment and functionality for constructing and managing graph models.
+     * The `context` is defined by the `ModelContext` interface, which includes
+     * methods for creating various graph components such as nodes, edges, and subgraphs.
      */
     val context: ModelContext
 }

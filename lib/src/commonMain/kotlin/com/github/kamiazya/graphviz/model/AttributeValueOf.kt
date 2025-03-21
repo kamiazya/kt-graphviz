@@ -4,22 +4,24 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 /**
- * AttributeValueOf is a delegate for an attribute value.
+ * A property delegate to manage attributes of objects implementing the `HasAttributes` interface.
  *
- * @param T A type of the model.
- * @param V A type of the attribute value.
- * @param actualName An actual name of the attribute.
- * @param defaultValue A default value of the attribute.
- * @return A delegate for an attribute value.
+ * @param T The type of the object implementing the `HasAttributes` interface.
+ * @param V The type of the attribute value being managed.
+ * @property actualName The custom name of the attribute. If `null`, the property name will be used.
+ * @property defaultValue An optional default value for the attribute.
+ * @property modifier An optional lambda to modify the value before setting it as an attribute.
  *
- * @example simple case
+ * ## Example
+ *
+ * ### simple case
  * ```
  * class TestModel : HasAttributes {
  *    var color: String? by AttributeValueOf()
  * }
  * ```
  *
- * @example with actual name
+ * ### with actual name
  * ```
  * class TestModel : HasAttributes {
  *   var color: String? by AttributeValueOf("actual_color")
@@ -31,7 +33,7 @@ import kotlin.reflect.KProperty
  * model.color // "red"
  * ```
  *
- * @example with default value
+ * ### with default value
  * ```
  * class TestModel : HasAttributes {
  *  var color: String? by AttributeValueOf(defaultValue = "red")
@@ -41,25 +43,20 @@ import kotlin.reflect.KProperty
  * model.color // "red"
  * ```
  */
-public class AttributeValueOf<T, V>(
-    /**
-     * An actual name of the attribute.
-     */
+class AttributeValueOf<T, V>(
     private val actualName: String? = null,
-
-    /**
-     * A default value of the attribute.
-     */
     private val defaultValue: V? = null,
-    /**
-     * A modifier of the attribute.
-     */
     private val modifier: ((V) -> V)? = null,
 ) : ReadWriteProperty<T, V?>
     where T : HasAttributes {
 
     /**
-     * When property is delegated, set the default value.
+     * Provides a delegate instance for the property.
+     * This function initializes the property with a default value, and associates the delegate with the property.
+     *
+     * @param thisRef The object for which the property is being delegated.
+     * @param property Metadata for the property to which the delegate is associated.
+     * @return The current instance of AttributeValueOf with the delegate provided.
      */
     operator fun provideDelegate(thisRef: T, property: KProperty<*>): AttributeValueOf<T, V> {
         setValue(thisRef, property, defaultValue)
@@ -67,17 +64,22 @@ public class AttributeValueOf<T, V>(
     }
 
     /**
-     * When property is accessed, get the attribute value.
+     * Retrieves the value of a specified attribute for the provided property.
+     *
+     * @param thisRef The object for which the property is being delegated.
+     * @param property Metadata for the associated property.
+     * @return The value of the attribute, or null if the attribute is not found.
      */
     override operator fun getValue(thisRef: T, property: KProperty<*>): V? {
         return thisRef.getAttribute(actualName ?: property.name)
     }
 
     /**
-     * When property is set, set the attribute value.
-     * If the value is null, remove the attribute.
-     * If the modifier is set, apply the modifier to the value before setting value.
+     * Sets the value of an attribute for the given property. If the value is null, the attribute is removed.
      *
+     * @param thisRef The object for which the property is being delegated.
+     * @param property Metadata for the property to which the delegate is associated.
+     * @param value The value to set for the attribute. If null, the attribute will be removed.
      */
     override operator fun setValue(thisRef: T, property: KProperty<*>, value: V?) {
         if (value == null) {

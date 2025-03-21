@@ -10,9 +10,23 @@ import com.github.kamiazya.graphviz.model.NodeModel
 import com.github.kamiazya.graphviz.model.SubgraphModel
 
 /**
- * BaseGraph is a base class for graph models.
+ * BaseGraph is an abstract class representing the foundational structure of a graph model.
+ *
+ * This class functions as the base for various graph types, supporting nodes, edges, subgraphs,
+ * and attribute groups for graphs, nodes, and edges. It provides default property implementations
+ * for managing graph components and attributes.
+ *
+ * @property context The context of the model, used for creating and managing graph-related objects.
+ * @property id The unique identifier for the graph, which can be nullable.
+ * @property comment An optional comment associated with the graph.
+ * @property nodes A list of nodes contained within the graph.
+ * @property edges A list of edges contained within the graph.
+ * @property subgraphs A list of subgraphs contained within the graph.
+ * @property graphAttributes Attributes specifically associated with the graph.
+ * @property nodeAttributes Attributes to be applied to nodes within the graph.
+ * @property edgeAttributes Attributes to be applied to edges within the graph.
  */
-public abstract class BaseGraph(
+abstract class BaseGraph(
     override val context: ModelContext,
     override var id: String?,
     override var comment: String? = null,

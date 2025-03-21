@@ -4,14 +4,15 @@ import com.github.kamiazya.graphviz.ast.dsl.EdgeDistributionBuilder
 import com.github.kamiazya.graphviz.type.Compass
 
 /**
- * Represents a forward reference node in a graph.
+ * Represents a forward reference to a node in a graph, which may include optional port and compass point information.
  *
- * This class is used to represent a node that is referenced before it is defined in the graph.
- * It allows creating graphs with circular dependencies or references to nodes that are defined later.
+ * A `ForwardRefNode` is used to define a node reference with its identifier and optional additional attributes
+ * such as port or compass directions. These references are typically used in constructing graph visualization
+ * structures and defining relationships between nodes.
  *
- * @property id An ID of the node.
- * @property port A port of the node.
- * @property compass A compass of the node
+ * @property id The unique identifier for the node.
+ * @property port An optional port associated with the node, specifying subcomponents or subdivisions.
+ * @property compass An optional compass direction indicating the relative position (e.g., north, south).
  *
  * ## Examples
  *
@@ -70,24 +71,34 @@ import com.github.kamiazya.graphviz.type.Compass
  *
  * val edge = Edge(listOf(ref, ref2, ref3, ref4))
  * ```
- *
  */
-public data class ForwardRefNode(
+data class ForwardRefNode(
     val id: String,
     val port: String? = null,
     val compass: Compass? = null,
 ) : NodeRef {
     companion object {
 
-        internal const val MAY_ONLY_HAVE_ID = 1
-        internal const val MAY_HAVE_ID_AND_PORT_OR_COMPASS = 2
-        internal const val MAY_HAVE_ID_AND_PORT_AND_COMPASS = 3
+        private const val MAY_ONLY_HAVE_ID = 1
+        private const val MAY_HAVE_ID_AND_PORT_OR_COMPASS = 2
+        private const val MAY_HAVE_ID_AND_PORT_AND_COMPASS = 3
 
         /**
-         * Create a ForwardRefNode from a string.
-         * @param ref A string to create a ForwardRefNode.
-         * @return A ForwardRefNode.
-         * @throws IllegalArgumentException if the ref is invalid.
+         * Parses a string reference into a ForwardRefNode object.
+         *
+         * The input string is expected to be in one of the following formats:
+         * - `ID`
+         * - `ID:PortOrCompass`
+         * - `ID:Port:Compass`
+         *
+         * Based on the format, the method extracts the appropriate parts:
+         * - An ID is always required.
+         * - A Port is optional and is provided either with or without a Compass.
+         * - A Compass is optional and interpreted when valid.
+         *
+         * @param ref A string reference containing the ID and optionally the Port and/or Compass.
+         * @return A ForwardRefNode object constructed using the parsed ID, Port, and Compass.
+         * @throws IllegalArgumentException if the format of the input string is invalid.
          *
          * ## Examples
          *
