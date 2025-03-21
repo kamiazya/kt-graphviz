@@ -8,11 +8,6 @@ dependencies {
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.7")
 }
 
-repositories {
-    mavenCentral()
-    google()
-}
-
 kotlin {
     jvm {
         testRuns.named("test") {
@@ -40,7 +35,6 @@ kotlin {
 detekt {
     autoCorrect = true
     buildUponDefaultConfig = true
-    autoCorrect = true
 
     source.setFrom("src/commonMain/kotlin")
 }

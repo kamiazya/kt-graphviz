@@ -9,3 +9,18 @@
 
 rootProject.name = "kt-graphviz-root"
 include("lib")
+
+pluginManagement {
+    repositories {
+        google()
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
