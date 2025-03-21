@@ -11,6 +11,8 @@ class EdgeTargetList(
     constructor(vararg targets: NodeRef) : this(targets.toMutableList())
 
     override fun toAST() = EdgeDistributionBuilder {
-        // targets.forEach { nodeRef(it) }
+        for (target in targets) {
+            load(target.toAST())
+        }
     }.stmts
 }

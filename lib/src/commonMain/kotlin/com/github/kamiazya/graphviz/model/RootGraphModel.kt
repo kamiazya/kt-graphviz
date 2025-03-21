@@ -19,6 +19,32 @@ public interface RootGraphModel : Model<DotSTMT>, BaseGraphModel {
     val directed: Boolean
 
     override fun toAST() = DotSTMTBuilder {
-        //
+        comment?.let {
+            comment(it)
+        }
+        rootGraph(
+            id = id?.quated(),
+            strict = strict,
+            directed = directed,
+        ) {
+            for ((key, value) in attributes) {
+                attribute(
+                    key.unquated(),
+                    value.toString().quated(),
+                )
+            }
+            load(graphAttributes.toAST())
+            load(nodeAttributes.toAST())
+            load(edgeAttributes.toAST())
+            for (node in nodes) {
+                load(node.toAST())
+            }
+            for (edge in edges) {
+                load(edge.toAST())
+            }
+            for (subgraph in subgraphs) {
+                load(subgraph.toAST())
+            }
+        }
     }.stmts
 }

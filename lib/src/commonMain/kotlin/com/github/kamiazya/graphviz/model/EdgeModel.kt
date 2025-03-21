@@ -14,6 +14,17 @@ public interface EdgeModel :
     EdgeAttributeGroupModel {
 
     override fun toAST() = GraphSTMTBuilder {
-        //
+        comment?.let {
+            comment(it)
+        }
+        edge({
+            for (target in targets) {
+                load(target.toAST())
+            }
+        }) {
+            for (attr in attributes) {
+                load(attr.toAST())
+            }
+        }
     }.stmts
 }

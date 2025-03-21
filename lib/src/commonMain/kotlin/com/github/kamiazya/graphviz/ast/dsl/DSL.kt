@@ -22,6 +22,10 @@ annotation class ASTDslMarker
 
 open class STMTBuilder<T : AST> {
     var stmts: MutableList<T> = mutableListOf()
+
+    fun load(stmts: List<T>) {
+        this.stmts.addAll(stmts)
+    }
 }
 
 interface LiteralBuilder {
@@ -115,6 +119,16 @@ class GraphSTMTBuilder(body: GraphSTMTBuilder.() -> Unit) : STMTBuilder<GraphSTM
         stmts += Node(
             id = id,
             children = AttributeSTMTBuilder(body).stmts
+        )
+    }
+
+    fun attribute(
+        key: Literal,
+        value: Literal,
+    ) {
+        stmts += Attribute(
+            key = key,
+            value = value,
         )
     }
 

@@ -13,13 +13,7 @@ public interface DotModel : Model<DotSTMT>, HasComment, HasRootGraph, HasContext
             comment(it)
         }
         root?.let {
-            rootGraph(
-                strict = it.strict,
-                directed = it.directed,
-                id = it.id?.quated(),
-            ) {
-                //
-            }
+            load(it.toAST())
         }
     }.stmts
 }

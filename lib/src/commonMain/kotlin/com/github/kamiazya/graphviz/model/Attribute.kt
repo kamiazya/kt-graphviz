@@ -13,5 +13,9 @@ public data class Attribute(
 ) : Model<AttributesSTMT> {
 
     override fun toAST() = AttributeSTMTBuilder {
+        attribute(
+            key.unquated(),
+            value.toString().quated(),
+        )
     }.stmts
 }

@@ -18,6 +18,13 @@ public interface NodeModel : Model<GraphSTMT>, HasID, HasComment, HasAttributes,
     public fun toRef(port: String? = null, compass: Compass? = null): ForwardRefNode = ForwardRefNode(id, port, compass)
 
     override fun toAST() = GraphSTMTBuilder {
-        //
+        comment?.let {
+            comment(it)
+        }
+        node(id.quated()) {
+            for (attr in attributes) {
+                load(attr.toAST())
+            }
+        }
     }.stmts
 }
