@@ -1,3 +1,5 @@
+@file:Suppress("MatchingDeclarationName")
+
 package com.github.kamiazya.graphviz.model.dsl
 
 /**

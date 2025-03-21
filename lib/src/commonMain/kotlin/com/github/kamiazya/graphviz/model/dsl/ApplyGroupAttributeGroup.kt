@@ -7,7 +7,8 @@ import com.github.kamiazya.graphviz.model.HasGraphAttributes
  *
  * This interface extends [HasGraphAttributes] to provide functionality for applying graph-specific attributes
  * within the scope of a DOT graph representation.
- * The attributes configured using this interface will correspond to the graph attributes defined in a generated DOT file.
+ * The attributes configured using this interface will correspond to the graph attributes defined in a generated DOT
+ * file.
  */
 @DotDslMarker
 interface ApplyGroupAttributeGroup : HasGraphAttributes {

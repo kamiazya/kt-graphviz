@@ -1,10 +1,15 @@
 package com.github.kamiazya.graphviz.model.dsl
 
-import com.github.kamiazya.graphviz.model.*
+import com.github.kamiazya.graphviz.model.BaseGraphModel
+import com.github.kamiazya.graphviz.model.EdgeDistribution
+import com.github.kamiazya.graphviz.model.EdgeModel
+import com.github.kamiazya.graphviz.model.NodeModel
+import com.github.kamiazya.graphviz.model.SubgraphModel
 
 /**
- * Represents the base scope for constructing a graph. This interface provides methods for creating nodes, edges, subgraphs,
- * root graphs, forward references, and attribute groups, as well as managing these elements within a graph structure.
+ * Represents the base scope for constructing a graph. This interface provides methods for creating nodes, edges,
+ * subgraphs, root graphs, forward references, and attribute groups, as well as managing these elements within a graph
+ * structure.
  *
  * @param T The type of graph model that this scope operates on, constrained to `BaseGraphModel`.
  */

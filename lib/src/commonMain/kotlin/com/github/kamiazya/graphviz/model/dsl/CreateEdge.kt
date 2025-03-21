@@ -114,7 +114,8 @@ public interface CreateEdge : HasContext {
     operator fun EdgeModel.invoke(block: EdgeScope.() -> Unit): EdgeModel = EdgeScope(this).apply(block)
 
     /**
-     * Subtracts the provided edge distribution from the existing edge model and applies the changes to the current instance.
+     * Subtracts the provided edge distribution from the existing edge model and applies the changes to the current
+     * instance.
      *
      * @param other The edge distribution to subtract from the edge model.
      * @return The updated edge model after applying the subtraction.
