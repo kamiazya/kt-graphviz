@@ -11,7 +11,7 @@ package com.github.kamiazya.graphviz.model
  * This can be useful in graph modeling scenarios where additional metadata or properties
  * need to be associated with the graph as a whole.
  */
-public interface HasGraphAttributes {
+interface HasGraphAttributes {
     /**
      * Represents graph-specific attributes within a graph model.
      *

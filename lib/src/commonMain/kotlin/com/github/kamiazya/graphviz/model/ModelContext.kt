@@ -13,7 +13,7 @@ package com.github.kamiazya.graphviz.model
  *   customize the created graph objects.
  * - Facilitate the creation of graph-based hierarchical structures adhering to DOT specifications.
  */
-public interface ModelContext {
+interface ModelContext {
     /**
      * Creates a DOT model representation based on the given parameters.
      *

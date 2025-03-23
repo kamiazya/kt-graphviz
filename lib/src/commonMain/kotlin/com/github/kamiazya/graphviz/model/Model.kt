@@ -11,7 +11,7 @@ import com.github.kamiazya.graphviz.ast.AST
  *
  * @param T The type of elements in the AST, constrained to types that implement the `AST` interface.
  */
-public interface Model<T : AST> {
+interface Model<T : AST> {
     /**
      * Converts the current model into an Abstract Syntax Tree (AST) representation.
      *

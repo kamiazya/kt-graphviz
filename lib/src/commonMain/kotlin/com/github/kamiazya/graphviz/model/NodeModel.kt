@@ -19,7 +19,7 @@ import com.github.kamiazya.graphviz.type.Compass
  * - NodeAttributeGroup: Defines visual and structural attributes specific to nodes.
  *
  */
-public interface NodeModel : Model<GraphSTMT>, HasID, HasComment, HasAttributes, NodeAttributeGroup {
+interface NodeModel : Model<GraphSTMT>, HasID, HasComment, HasAttributes, NodeAttributeGroup {
     /**
      * Converts the current node model into a forward reference node representation.
      *
@@ -29,7 +29,7 @@ public interface NodeModel : Model<GraphSTMT>, HasID, HasComment, HasAttributes,
      * @param port An optional string representing the port of the node. This can be used to reference
      *             specific subcomponents or subdivisions of the node.
      * @param compass An optional `Compass` representing a specific direction*/
-    public fun toRef(port: String? = null, compass: Compass? = null): ForwardRefNode = ForwardRefNode(id, port, compass)
+    fun toRef(port: String? = null, compass: Compass? = null): ForwardRefNode = ForwardRefNode(id, port, compass)
 
     override fun toAST() = GraphSTMTBuilder {
         comment?.let {

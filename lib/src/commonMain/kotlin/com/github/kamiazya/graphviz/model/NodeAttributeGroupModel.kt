@@ -14,7 +14,7 @@ import com.github.kamiazya.graphviz.ast.dsl.GraphSTMTBuilder
  * This interface is commonly used in graph-related models to encapsulate and manage
  * node-specific attribute configurations.
  */
-public interface NodeAttributeGroup {
+interface NodeAttributeGroup {
     var shape: String?
     var color: String?
 }
@@ -27,7 +27,7 @@ public interface NodeAttributeGroup {
  * - `NodeAttributeGroup`: Provides capabilities to define and manage visual and structural node-specific attributes.
  * - `HasAttributes`: Manages a collection of key-value attribute pairs associated with the node.
  */
-public interface NodeAttributeGroupModel : Model<GraphSTMT>, NodeAttributeGroup, HasAttributes {
+interface NodeAttributeGroupModel : Model<GraphSTMT>, NodeAttributeGroup, HasAttributes {
     override fun toAST() = GraphSTMTBuilder {
         attributeGroup(
             kind = AttributeGroup.Kind.NODE,

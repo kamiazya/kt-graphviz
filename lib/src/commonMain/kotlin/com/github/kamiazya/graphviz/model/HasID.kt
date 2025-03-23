@@ -13,7 +13,7 @@ package com.github.kamiazya.graphviz.model
  * - Use cases may include nodes, edges, or other graph elements in
  *   a structure where unique identification is required.
  */
-public interface HasID {
+interface HasID {
     /**
      * A mutable property representing the unique identifier for an entity.
      *

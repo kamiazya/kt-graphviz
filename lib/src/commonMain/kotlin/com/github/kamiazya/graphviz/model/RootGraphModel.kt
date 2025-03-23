@@ -14,7 +14,7 @@ import com.github.kamiazya.graphviz.ast.dsl.DotSTMTBuilder
  * It supports features such as strictness and directedness settings for the graph,
  * ensuring compliance with DOT graph specifications.
  */
-public interface RootGraphModel : Model<DotSTMT>, BaseGraphModel {
+interface RootGraphModel : Model<DotSTMT>, BaseGraphModel {
 
     /**
      * Indicates whether the graph should be treated as a strict graph.

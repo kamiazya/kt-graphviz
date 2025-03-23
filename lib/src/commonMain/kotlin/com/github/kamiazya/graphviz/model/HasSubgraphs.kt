@@ -8,7 +8,7 @@ package com.github.kamiazya.graphviz.model
  * subgraphs by their identifiers. It is typically implemented by graph
  * models that consist of hierarchical or modular graph components.
  */
-public interface HasSubgraphs {
+interface HasSubgraphs {
     /**
      * Represents a collection of subgraphs within a graph model.
      *

@@ -12,7 +12,7 @@ package com.github.kamiazya.graphviz.model
  * - Declares a read-only property `nodeAttributes` of type `NodeAttributeGroupModel`.
  * - Serves as a building block for entities that handle or incorporate attributes of nodes.
  */
-public interface HasNodeAttributeGroupModel {
+interface HasNodeAttributeGroupModel {
     /**
      * Represents a group of attributes associated with a node.
      *

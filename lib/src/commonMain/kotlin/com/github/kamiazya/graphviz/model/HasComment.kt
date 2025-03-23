@@ -3,7 +3,7 @@ package com.github.kamiazya.graphviz.model
 /**
  * HasComment is an interface for models that have a comment.
  */
-public interface HasComment {
+interface HasComment {
     /**
      * Represents an optional comment associated with the model.
      *

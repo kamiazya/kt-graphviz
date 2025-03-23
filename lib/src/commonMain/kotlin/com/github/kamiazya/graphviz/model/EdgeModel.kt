@@ -21,7 +21,7 @@ import com.github.kamiazya.graphviz.ast.dsl.GraphSTMTBuilder
  * programmatically configured to represent edges in a graph definition. It allows constructing
  * edges that accurately describe the relationships within a graph, adhering to the DOT language structure.
  */
-public interface EdgeModel :
+interface EdgeModel :
     Model<GraphSTMT>,
     HasComment,
     HasAttributes,

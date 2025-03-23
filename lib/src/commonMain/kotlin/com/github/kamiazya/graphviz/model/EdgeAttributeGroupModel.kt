@@ -12,7 +12,7 @@ import com.github.kamiazya.graphviz.ast.dsl.GraphSTMTBuilder
  * - `EdgeAttributeGroup`: Provides support for edge-specific attributes such as color.
  * - `HasAttributes`: Defines a way to handle generic attributes as key-value pairs.
  */
-public interface EdgeAttributeGroupModel : Model<GraphSTMT>, EdgeAttributeGroup, HasAttributes {
+interface EdgeAttributeGroupModel : Model<GraphSTMT>, EdgeAttributeGroup, HasAttributes {
     override fun toAST() = GraphSTMTBuilder {
         attributeGroup(
             kind = AttributeGroup.Kind.EDGE,

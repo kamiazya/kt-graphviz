@@ -20,11 +20,6 @@ data class Comment(
      *
      * The `Kind` class defines the style or type of comment in the graph representation.
      * It is a sealed class to ensure that all possible types of comments are explicitly defined.
-     *
-     * Types of `Kind` include:
-     * - `BLOCK`: Represents a block comment style, often used for multi-line comments.
-     * - `SLASH`: Represents a single-line comment style, prefixed by slashes.
-     * - `MACRO`: Represents a macro comment, which may indicate preprocessing directives or macro-like behavior.
      */
     sealed class Kind {
         /**

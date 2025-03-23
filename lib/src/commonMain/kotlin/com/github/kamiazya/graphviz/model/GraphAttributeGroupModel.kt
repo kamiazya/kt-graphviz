@@ -21,7 +21,7 @@ public interface GraphAttributeGroup {
  * - Providing an `attributes` property defined by the `HasAttributes` interface.
  * - Converting the attribute group into the AST representation of a DOT graph.
  */
-public interface GraphAttributeGroupModel : Model<GraphSTMT>, GraphAttributeGroup, HasAttributes {
+interface GraphAttributeGroupModel : Model<GraphSTMT>, GraphAttributeGroup, HasAttributes {
     override fun toAST() = GraphSTMTBuilder {
         attributeGroup(
             kind = AttributeGroup.Kind.GRAPH,

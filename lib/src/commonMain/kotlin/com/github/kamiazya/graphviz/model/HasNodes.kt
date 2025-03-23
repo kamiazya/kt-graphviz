@@ -13,7 +13,7 @@ package com.github.kamiazya.graphviz.model
  * - Allows addition and removal of individual nodes.
  * - Provides functionality to clear all nodes.
  */
-public interface HasNodes {
+interface HasNodes {
     /**
      * A list containing all nodes managed by the implementing class.
      *

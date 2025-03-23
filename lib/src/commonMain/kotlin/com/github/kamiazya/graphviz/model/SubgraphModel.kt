@@ -11,7 +11,7 @@ import com.github.kamiazya.graphviz.ast.dsl.GraphSTMTBuilder
  * it to define and manage the structure and semantics of subgraphs. Subgraphs may include nodes, edges, attributes,
  * comments, additional nested subgraphs, and contextual metadata.
  */
-public interface SubgraphModel : Model<GraphSTMT>, BaseGraphModel {
+interface SubgraphModel : Model<GraphSTMT>, BaseGraphModel {
     /**
      * Determines whether the subgraph is identified as a cluster.
      *

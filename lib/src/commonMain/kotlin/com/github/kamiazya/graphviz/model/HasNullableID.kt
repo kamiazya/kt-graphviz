@@ -19,7 +19,7 @@ package com.github.kamiazya.graphviz.model
  * to provide dynamic or conditional assignment of identifiers while ensuring
  * compatibility with systems requiring optional ID handling.
  */
-public interface HasNullableID {
+interface HasNullableID {
     /**
      * A mutable property representing an optional identifier for an entity.
      *

@@ -3,7 +3,7 @@ package com.github.kamiazya.graphviz.model
 /**
  * HasContext is an interface for models that have a context.
  */
-public interface HasContext {
+interface HasContext {
     /**
      * Represents the context associated with a model, providing the necessary
      * environment and functionality for constructing and managing graph models.

@@ -71,7 +71,7 @@ class AttributeValueOf<T, V>(
      * @return The value of the attribute, or null if the attribute is not found.
      */
     override operator fun getValue(thisRef: T, property: KProperty<*>): V? {
-        return thisRef.getAttribute(actualName ?: property.name)
+        return thisRef.getAttributeOrNull(actualName ?: property.name)
     }
 
     /**
@@ -81,7 +81,7 @@ class AttributeValueOf<T, V>(
      * @param property Metadata for the property to which the delegate is associated.
      * @param value The value to set for the attribute. If null, the attribute will be removed.
      */
-    override operator fun setValue(thisRef: T, property: KProperty<*>, value: V?) {
+    override operator fun setValue(thisRef: T, property: KProperty<*>, value: V?): Unit {
         if (value == null) {
             thisRef.removeAttribute(actualName ?: property.name)
         } else {

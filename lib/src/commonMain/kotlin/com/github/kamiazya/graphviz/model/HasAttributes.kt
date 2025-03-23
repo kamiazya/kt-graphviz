@@ -22,20 +22,31 @@ interface HasAttributes {
     var attributes: List<Attribute>
 
     /**
-     * Retrieve an attribute value by its key.
+     * Retrieves an attribute value associated with the specified key or returns null if the key does not exist.
      *
-     * This function searches the `attributes` collection for an entry matching the specified key.
-     * If a matching key is found, the associated value is cast to the desired type and returned.
-     * If the key does not exist, the function returns null.
+     * This method searches the collection of attributes for an entry with a matching key and returns
+     * its value if found. If no such key exists, the method returns null.
      *
      * @param key The key of the attribute to retrieve.
-     * @return The value of the attribute associated with the specified key, cast to the desired type,
-     *         or null if the key does not exist.
+     * @return The value of the attribute associated with the specified key, or null if the key does not exist.
      */
-    fun <T : AttributeValue> getAttribute(key: String): T? = attributes.find { it.key == key }?.value?.let {
+    fun <T : AttributeValue> getAttributeOrNull(key: String): T? = attributes.find { it.key == key }?.value?.let {
         @Suppress("UNCHECKED_CAST")
         return it as T
     }
+
+    /**
+     * Retrieves an attribute value associated with the specified key.
+     *
+     * This method returns the attribute value corresponding to the given key. If the key does not exist
+     * in the attribute collection, an exception is thrown.
+     *
+     * @param key The key of the attribute to retrieve.
+     * @return The value of the attribute associated with the specified key.
+     *         The return type is a generic that extends `AttributeValue`.
+     * @throws IllegalStateException if no attribute with the specified key exists.
+     */
+    fun <T : AttributeValue> getAttribute(key: String): T = getAttributeOrNull(key) ?: error("No attribute with key $key")
 
     /**
      * Sets an attribute with the specified key and value.

@@ -12,4 +12,4 @@ package com.github.kamiazya.graphviz.model
  * - Capability to participate in the transformation to Abstract Syntax Tree (AST) representations as part of
  *   the `EdgeDistribution` hierarchy.
  */
-public sealed interface NodeRef : EdgeDistribution
+sealed interface NodeRef : EdgeDistribution

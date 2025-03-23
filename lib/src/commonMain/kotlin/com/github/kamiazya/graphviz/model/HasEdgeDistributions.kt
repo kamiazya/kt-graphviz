@@ -7,7 +7,7 @@ package com.github.kamiazya.graphviz.model
  * targeting nodes or groups of nodes. It enables adding, removing, and managing the connectivity
  * relationships defined by `EdgeDistribution` instances.
  */
-public interface HasEdgeDistributions {
+interface HasEdgeDistributions {
     /**
      * A list of edge distributions targeting nodes or groups of nodes within a graph structure.
      *

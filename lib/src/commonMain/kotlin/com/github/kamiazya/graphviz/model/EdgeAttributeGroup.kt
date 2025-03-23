@@ -7,6 +7,6 @@ package com.github.kamiazya.graphviz.model
  * such as its color. Implementations can extend this interface to define additional
  * attributes as needed.
  */
-public interface EdgeAttributeGroup {
+interface EdgeAttributeGroup {
     var color: String?
 }

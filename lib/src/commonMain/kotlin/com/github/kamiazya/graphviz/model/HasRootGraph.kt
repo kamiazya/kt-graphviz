@@ -8,7 +8,7 @@ package com.github.kamiazya.graphviz.model
  * or validate the presence of the root graph. This is particularly useful in complex
  * graph representations where one graph serves as the primary or overarching structure.
  */
-public interface HasRootGraph {
+interface HasRootGraph {
     /**
      * The `root` variable represents the root graph associated with a graph model.
      *

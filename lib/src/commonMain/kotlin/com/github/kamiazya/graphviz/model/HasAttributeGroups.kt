@@ -11,7 +11,7 @@ package com.github.kamiazya.graphviz.model
  * Implementing this interface allows defining and managing attribute groups
  * for various graph elements, ensuring consistent and organized attribute handling.
  */
-public interface HasAttributeGroups :
+interface HasAttributeGroups :
     HasGraphAttributes,
     HasNodeAttributeGroupModel,
     HasEdgeAttributeGroupModel

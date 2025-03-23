@@ -12,7 +12,7 @@ package com.github.kamiazya.graphviz.model
  * - Supports a list of `EdgeModel` instances.
  * - Methods to modify the edge collection, providing flexibility for dynamic updates.
  */
-public interface HasEdges {
+interface HasEdges {
     /**
      * A list of edges representing the connections in a graph structure.
      *
@@ -31,7 +31,7 @@ public interface HasEdges {
      *
      * @param edge The edge to be added, represented as an instance of the `EdgeModel`.
      */
-    fun addEdge(edge: EdgeModel) {
+    fun addEdge(edge: EdgeModel): Unit {
         edges += edge
     }
 
@@ -40,7 +40,7 @@ public interface HasEdges {
      *
      * @param edge The edge to be removed, represented as an instance of the `EdgeModel`.
      */
-    fun removeEdge(edge: EdgeModel) {
+    fun removeEdge(edge: EdgeModel): Unit {
         edges -= edge
     }
 
@@ -52,7 +52,7 @@ public interface HasEdges {
      * the graph's structure when all existing connections need to
      * be removed.
      */
-    fun clearEdges() {
+    fun clearEdges(): Unit {
         edges = emptyList()
     }
 }
